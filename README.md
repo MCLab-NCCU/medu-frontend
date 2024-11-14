@@ -12,8 +12,8 @@ Start develop
 npm run dev
 ```
 
-Stop develop
-<kbd>ctrl + c</kbd>
+Shut down  
+<kbd>ctrl + c</kbd> in terminal  
 Default it will run application at port 3000
 
 # VSCode Setting for ESLint and Prettier
