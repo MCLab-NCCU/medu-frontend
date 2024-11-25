@@ -3,6 +3,7 @@ import RootLayout from "./RootLayout";
 
 import Home from "./pages/Home";
 import Page1 from "./pages/Page1";
+import MainPage from "./pages/MainPage";
 
 const routerData: RouteObject[] = [
   {
@@ -10,6 +11,7 @@ const routerData: RouteObject[] = [
     children: [
       { path: "/", Component: Home },
       { path: "/page1", Component: Page1 },
+      { path: "/home", Component: MainPage },
     ],
   },
 ];
