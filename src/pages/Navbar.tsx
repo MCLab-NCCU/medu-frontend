@@ -1,22 +1,20 @@
 import { IoSettingsOutline } from "react-icons/io5";
 function Navbar() {
   return (
-    <div className="grid grid-raws-4 text-center">
-      <div className="flex grid-cols-3 h-[7.5rem] ">
-        <div className="w-1/4 m-auto">
+    <div className="grid grid-raws-4 text-center h-full">
+      <div className="flex grid-cols-3 h-4/5">
+        <div className="w-[13%] m-auto">
           <div className="border-[0.125rem] rounded-full m-auto">
             <img src="src\assets\profile_photo.png"></img>
           </div>
         </div>
-        <div className="w-1/2 m-auto text-[3rem]">姓名</div>
+        <div className="w-1/2 m-auto text-[2.5rem]">姓名</div>
         <IoSettingsOutline className="w-1/4 m-auto text-5xl" />
       </div>
-      <div className=" border-white border-[0.25rem] h-0"></div>
-      <div className="flex grid-cols-2 h-24 text-3xl">
-        <div className="w-1/2 m-auto  ">交友邀請</div>
-        <div className="w-1/2 m-auto">訊息</div>
+      <div className="mt-4 flex grid-cols-2 text-xl h-1/5 ">
+        <button className="w-1/2 m-auto ">配對</button>
+        <button className="w-1/2 m-auto">訊息</button>
       </div>
-      <div className=" border-black border-[0.125rem] h-0"></div>
     </div>
   );
 }
