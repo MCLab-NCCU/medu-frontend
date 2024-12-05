@@ -30,7 +30,7 @@ module.exports = {
         cha: "#bf8e68",
         font: "#001427",
       },
-
+    },
+    plugins: [require("daisyui")],
   },
-  plugins: [require("daisyui")],
 };
