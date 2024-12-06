@@ -2,8 +2,8 @@ import { HiOutlinePaperAirplane } from "react-icons/hi2";
 
 function ChatRoom() {
   return (
-    <div className="h-screen">
-      <div className="flex  rounded-md p-2 my-auto h-[16%] border-gray-400 border-b-2">
+    <div className="h-[94vh]">
+      <div className="flex  rounded-md p-2 my-auto h-[15%] border-gray-400 border-b-2">
         <div className="rounded-full w-[8%] m-auto">
           <img src="src\assets\profile_photo.png" />
         </div>
