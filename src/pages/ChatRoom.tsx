@@ -99,13 +99,13 @@ function ChatRoom() {
       </div>
 
       <div className="bg-gray-50 rounded-md p-4 my-auto w-full flex absolute bottom-0">
-        <div className="w-[90%] m-auto flex">
+        <div className="w-full m-auto flex">
           <input
             type="text"
             placeholder="輸入訊息..."
-            className="bg-[#fefefe] rounded-full h-16 w-4/5 text-3xl px-3 block"
+            className="bg-[#fefefe] rounded-full h-16 w-[90%] text-3xl px-3 block"
           />
-          <HiOutlinePaperAirplane className="text-6xl w-1/5 text-left" />
+          <HiOutlinePaperAirplane className="text-6xl w-[10%] text-left" />
         </div>
       </div>
     </div>
