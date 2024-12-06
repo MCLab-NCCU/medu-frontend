@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "./api/registerAPI";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
@@ -11,7 +13,7 @@ function Register() {
     gender: "",
   });
 
-  const [successMessage, setSuccessMessage] = useState(""); // State for success message
+  const navigate = useNavigate();
   const birthdayInputRef = useRef<HTMLInputElement | null>(null);
 
   // Initialize Flatpickr for birthday input
@@ -59,28 +61,8 @@ function Register() {
     console.log("Button Clicked!");
 
     try {
-      const response = await fetch(
-        "http://140.119.164.16:3000/api/user/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setSuccessMessage("Registration was successful!"); // Set success message
-        setFormData({
-          username: "",
-          password: "",
-          nickname: "",
-          birthDate: "",
-          gender: "",
-        });
-      } else {
-        throw new Error("Registration failed");
-      }
+      const response = await registerUser(formData);
+      navigate("/");
     } catch (error) {
       console.error(error); // Handle error
     }
@@ -205,19 +187,9 @@ function Register() {
                 登入
               </a>
             </p>
-            {/* Conditionally render the success message */}
-            {successMessage && (
-              <div
-                className="success-message"
-                style={{ color: "green", marginTop: "10px" }}
-              >
-                {successMessage}
-              </div>
-            )}
           </div>
         </div>
       </div>
-
     </div>
   );
 }
