@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../api/registerAPI";
+import register from "../api/register";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import { showToast } from "../utils/showtoast";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -61,8 +62,10 @@ function Register() {
     console.log("Register Button Clicked!");
 
     try {
-      const response = await registerUser(formData);
-      navigate("/");
+      const response = await register(formData);
+      if (response.message === "register success") {
+        navigate("/");
+      }
     } catch (error) {
       console.error(error); // Handle error
     }

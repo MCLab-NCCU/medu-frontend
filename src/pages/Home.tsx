@@ -14,8 +14,8 @@ function Home() {
       */
 
   return (
-    <div className="flex h-screen">
-      <div className="w-1/4 border-black rounded-lg mt-4">
+    <div className="flex">
+      <div className="w-1/4 border-black rounded-lg">
         <div className="h-[15%]">
           <Navbar />
         </div>
@@ -25,7 +25,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="w-3/4 bg-[#fefefe] rounded-lg m-2 border-black border-2 relative">
+      <div className="w-3/4 bg-[#fefefe] rounded-lg border-black border-2 relative h-fit">
         <ChatRoom />
       </div>
     </div>
