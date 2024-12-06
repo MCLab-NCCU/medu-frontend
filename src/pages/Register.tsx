@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "./api/registerAPI";
+import { registerUser } from "../api/registerAPI";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
@@ -58,7 +58,7 @@ function Register() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Button Clicked!");
+    console.log("Register Button Clicked!");
 
     try {
       const response = await registerUser(formData);

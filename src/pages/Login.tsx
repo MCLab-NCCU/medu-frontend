@@ -1,17 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../api/loginAPI";
 
 function Login() {
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
   const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevent default form submission
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-    // Here you can add your login logic (e.g., API call)
-    // For this example, we'll assume login is always successful
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Login Button Clicked!");
 
-    // Navigate to Home page after successful login
-    navigate("/home");
+    try {
+      const response = await loginUser(formData);
+      navigate("/home");
+    } catch (error) {
+      console.error(error); // Handle error
+    }
   };
 
   return (
@@ -29,6 +45,8 @@ function Login() {
           name="username"
           placeholder="輸入您的使用者名稱"
           className="mb-4 block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
+          value={formData.username}
+          onChange={handleChange}
           required
         />
         <label
@@ -43,6 +61,8 @@ function Login() {
           name="password"
           placeholder="輸入您的密碼"
           className="mb-8 block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
+          value={formData.password}
+          onChange={handleChange}
           required
         />
         <button
