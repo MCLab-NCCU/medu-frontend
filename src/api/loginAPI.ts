@@ -1,7 +1,7 @@
-// src/api/registerAPI.ts
+// src/api/loginAPI.ts
 
-export const registerUser = (formData: any) => {
-  return fetch("http://140.119.164.16:3000/api/user/register", {
+export const loginUser = (formData: any) => {
+  return fetch("http://140.119.164.16:3000/api/user/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
