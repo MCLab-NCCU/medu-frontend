@@ -23,3 +23,18 @@ html {
     font-size: 16px;
   }
 }
+
+.wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100px; /* Equivalent to w-24 */
+  height: 100px; /* Equivalent to h-24 */
+}
+
+.slide {
+  position: absolute;
+  left: -100px; /* Start off-screen */
+  width: 100%; /* Full width of the wrapper */
+  height: 100%; /* Full height of the wrapper */
+  background: blue; /* Background color of the sliding div */
+}
