@@ -30,7 +30,6 @@ function Login() {
       const jwt = await login(formData);
       setUserTokenCookie(jwt);
       showToast("success", "登入成功");
-      connect(jwt.token);
       navigate("/home");
     } catch (error) {
       showToast("error", "帳密有誤");
