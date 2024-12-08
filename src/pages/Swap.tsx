@@ -15,13 +15,17 @@ const Swap = () => {
       >
         Toggle Slide
       </button>
-      <div className="wrapper relative overflow-hidden w-24 h-24 border border-black">
+      <div className="relative overflow-hidden w-24 h-24 border border-black">
         <div 
-          className={`slide absolute w-full h-full bg-blue-500 transition-all duration-1000`}
-          style={{ left: isVisible ? '0' : '-100px' }} // Use inline styles for left positioning
+          className="flex absolute w-full h-full bg-blue-500 transition-all duration-1000"
+          style={{ right: isVisible ? '0' : '-100px' }} // Use inline styles for left positioning
         >
           {/* Content of the sliding div */}
-          {isVisible && <p className="text-white text-center">Sliding Div Content</p>}
+          {isVisible && 
+          <div className="w-full overflow-x-hidden overflow-y-scroll no-scrollbar m-0.5">
+            <div className="flex p-2 border w-full h-[630px]"></div>
+          </div>
+          }
         </div>
       </div>
     </div>
