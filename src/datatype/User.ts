@@ -20,10 +20,25 @@ export type loginInfo = {
 };
 
 export type friendlist = {
-  friendList: [];
+  friendList: [friendDetail];
 };
 
-export type friend = {
-  id: string;
-  nickname: string;
+export type friendDetail = {
+  friendId: string;
+  friendNickname: string;
+  friendLatestMessage: message;
+};
+
+export type messageHistory = {
+  messageHistory: [message];
+};
+
+type message = {
+  createdAt: string;
+  fromUserId: string;
+  message: string;
+  toUserId: string;
+  updatedAt: string;
+  __v: number;
+  _id: string;
 };

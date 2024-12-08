@@ -1,6 +1,6 @@
 import { nicknameResponse } from "../datatype/User";
 
-async function getFriendList(id: string) {
+async function getNickname(id: string) {
   const res = await fetch(
     "http://140.119.164.16:3000/api/user/nickname/" + id,
     {
@@ -15,4 +15,4 @@ async function getFriendList(id: string) {
   return res.json() as Promise<nicknameResponse>;
 }
 
-export default getFriendList;
+export default getNickname;
