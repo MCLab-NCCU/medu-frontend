@@ -1,4 +1,3 @@
-import connect from "../api/websocket";
 import useUserTokenCookie from "../hook/useUserTokenCookie";
 import ChatRoom from "./ChatRoom";
 import Navbar from "./Navbar";
@@ -7,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function Home() {
   const { tokenCookie } = useUserTokenCookie();
-  const ws = connect(tokenCookie!);
+
   const { data } = useFriendList();
   const navigate = useNavigate();
 
@@ -44,7 +43,7 @@ function Home() {
       </div>
 
       <div className="w-3/4 bg-[#fefefe] rounded-lg border-black border-2 relative h-fit">
-        <ChatRoom websocket={ws} />
+        <ChatRoom />
       </div>
     </div>
   );

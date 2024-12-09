@@ -4,20 +4,53 @@ import useMessageHistory from "../hook/useMessageHistory";
 import useNickname from "../hook/useNickname";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
+import useUserTokenCookie from "../hook/useUserTokenCookie";
 
 type message = {
   id: string;
+  sender: string;
   content: string;
 };
 
-function ChatRoom({ websocket }: { websocket: WebSocket }) {
+function ChatRoom() {
   const [searchParams] = useSearchParams();
   const target = searchParams.get("friendID");
+  const { tokenCookie } = useUserTokenCookie();
   const { data: messages, status: messageStatus } = useMessageHistory(target!);
   const { data: nickname, status: nicknameStatus } = useNickname(target!);
   const [sendcontent, setSendcontent] = useState<message[]>([]);
   const chatroomRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLInputElement>(null);
+
+  let ws = new WebSocket(
+    "ws://140.119.164.16:3000/socket?token=" + tokenCookie
+  );
+  ws.onopen = () => console.log("[open connection]");
+  ws.onmessage = (event) => {
+    console.log("收到服務器消息:", event.data);
+  };
+  ws.onclose = () => {
+    console.log("bye");
+    ws = new WebSocket("ws://140.119.164.16:3000/socket?token=" + tokenCookie);
+  };
+
+  /*useEffect(() => {
+    if (tokenCookie) {
+      const ws = new WebSocket(
+        "ws://140.119.164.16:3000/socket?token=" + tokenCookie
+      );
+      ws.onopen = () => console.log("[open connection]");
+      ws.onmessage = (event) => {
+        console.log("收到服務器消息:", event.data);
+      };
+
+      return () => {
+        if (ws) {
+          ws.close();
+        }
+      };
+    }
+  }, [tokenCookie]);*/
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -28,7 +61,11 @@ function ChatRoom({ websocket }: { websocket: WebSocket }) {
         // 確保消息來自當前聊天對象
         if (data.fromUserId === target) {
           setSendcontent((prev) => [
-            { id: new Date().toISOString(), content: data.message },
+            {
+              id: new Date().toISOString(),
+              sender: data.fromUserId,
+              content: data.message,
+            },
             ...prev,
           ]);
         }
@@ -37,12 +74,12 @@ function ChatRoom({ websocket }: { websocket: WebSocket }) {
       }
     };
 
-    websocket.addEventListener("message", handleMessage);
+    ws.addEventListener("message", handleMessage);
 
     return () => {
-      websocket.removeEventListener("message", handleMessage);
+      ws.removeEventListener("message", handleMessage);
     };
-  }, [websocket, target]);
+  }, [ws, target]);
 
   useEffect(() => {
     if (chatroomRef.current) {
@@ -53,14 +90,14 @@ function ChatRoom({ websocket }: { websocket: WebSocket }) {
   const sendMessage = () => {
     if (contentRef.current?.value.trim()) {
       const value = contentRef.current.value.trim();
-      websocket.send(
+      ws.send(
         JSON.stringify({
           message: value,
           targetUserId: target,
         })
       );
       setSendcontent((prev) => [
-        { id: new Date().toISOString(), content: value },
+        { id: new Date().toISOString(), sender: "me", content: value },
         ...prev,
       ]);
       contentRef.current.value = "";
@@ -110,11 +147,21 @@ function ChatRoom({ websocket }: { websocket: WebSocket }) {
               </div>
             </div>
           ))}
-
-          {sendcontent.map((value) => (
-            <div key={value.id} className="flex justify-end m-2">
-              <div className="bg-[#ffdeaa] text-4xl text-black p-4 rounded-full max-w-5xl">
-                {value.content}
+        </div>
+        <div className="flex space-y-2 flex-col-reverse">
+          {sendcontent?.map((message) => (
+            <div
+              key={message.id}
+              className={`flex ${
+                message.sender === target ? "justify-start" : "justify-end"
+              } m-2`}
+            >
+              <div
+                className={`${
+                  message.sender === target ? "bg-[#bf8e68]" : "bg-[#ffdeaa]"
+                } text-4xl text-black p-4 rounded-full max-w-5xl`}
+              >
+                {message.content}
               </div>
             </div>
           ))}
