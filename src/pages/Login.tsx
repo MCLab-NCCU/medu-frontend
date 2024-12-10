@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import login from "../api/login";
 import useUserTokenCookie from "../hook/useUserTokenCookie";
 import { showToast } from "../utils/showtoast";
-import connect from "../api/websocket";
+import { useWebSocketStore } from "../store/useWebsocket";
 
 function Login() {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const connect = useWebSocketStore((state) => state.connect);
 
   const { setUserTokenCookie } = useUserTokenCookie();
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ function Login() {
     try {
       const jwt = await login(formData);
       setUserTokenCookie(jwt);
+      connect(import.meta.env.VITE_WEBSOCKET_URL + jwt.token);
       showToast("success", "登入成功");
       navigate("/home");
     } catch (error) {

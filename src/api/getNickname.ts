@@ -2,7 +2,7 @@ import { nicknameResponse } from "../datatype/User";
 
 async function getNickname(id: string) {
   const res = await fetch(
-    "http://140.119.164.16:3000/api/user/nickname/" + id,
+    import.meta.env.VITE_SERVER_URL + "user/nickname/" + id,
     {
       method: "GET",
     }
