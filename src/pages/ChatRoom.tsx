@@ -5,6 +5,7 @@ import useNickname from "../hook/useNickname";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useWebSocketStore } from "../store/useWebsocket";
+import Profile_header from "../assets/profile_photo.png"
 
 type message = {
   id: string;
@@ -96,7 +97,7 @@ function ChatRoom() {
     <div className="h-[94vh]">
       <div className="flex rounded-md p-2 my-auto h-[15%] border-gray-400 border-b-2">
         <div className="rounded-full w-[8%] m-auto">
-          <img src="src/assets/profile_photo.png" alt="Profile" />
+          <img src={Profile_header} alt="Profile" />
         </div>
         <div className="w-[85%] text-5xl px-10 my-auto">
           {nickname?.nickname}

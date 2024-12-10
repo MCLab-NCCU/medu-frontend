@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { friendDetail } from "../datatype/User";
+import Profile_header from "../assets/profile_photo.png"
 
 type FriendListProps = {
   friends?: friendDetail[]; // `friends` 可以是陣列或未定義
@@ -19,7 +20,7 @@ function FriendList({ friends }: FriendListProps) {
           }}
         >
           <div className="w-20 border-2 rounded-full m-auto">
-            <img src="src/assets/profile_photo.png" alt="Profile" />
+            <img src={Profile_header} alt="Profile" />
           </div>
           <div className="w-3/4 grid-rows-2 text-3xl p-2">
             <div className="text-3xl">{friend.friendNickname}</div>

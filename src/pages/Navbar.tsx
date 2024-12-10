@@ -3,6 +3,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import useUserTokenCookie from "../hook/useUserTokenCookie";
 import { showToast } from "../utils/showtoast";
+import Profile_header from "../assets/profile_photo.png"
 function Navbar() {
   const navigate = useNavigate();
   const { deleteUserTokenCookie } = useUserTokenCookie();
@@ -22,7 +23,7 @@ function Navbar() {
       <div className="flex grid-cols-3 h-4/5">
         <div className="w-[13%] m-auto">
           <div className="border-[0.125rem] rounded-full m-auto">
-            <img src="src\assets\profile_photo.png"></img>
+            <img src={Profile_header}></img>
           </div>
         </div>
         <div className="w-1/2 m-auto text-[2.5rem]">姓名</div>
