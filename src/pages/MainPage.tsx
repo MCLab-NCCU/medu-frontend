@@ -1,12 +1,8 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Login from "./Login.tsx";
-import useUserTokenCookie from "../hook/useUserTokenCookie.ts";
 
 function MainPage() {
   const navigate = useNavigate();
-  const { tokenCookie } = useUserTokenCookie();
-
-  if (tokenCookie) return <Navigate to="/home" />;
 
   return (
     <div className="flex flex-col h-screen">

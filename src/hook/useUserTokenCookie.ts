@@ -1,5 +1,5 @@
 import { useCookies } from "react-cookie";
-import { JWT } from "../datatype/Jwt";
+import { JWT } from "../datatype/JWT";
 
 const userTokenName = "userToken";
 

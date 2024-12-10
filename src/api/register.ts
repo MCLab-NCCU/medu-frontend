@@ -3,7 +3,7 @@
 import { registerInfo, registerResponse } from "../datatype/User";
 
 async function register(formData: registerInfo) {
-  const res = await fetch("http://140.119.164.16:3000/api/user/register", {
+  const res = await fetch(import.meta.env.VITE_SERVER_URL + "user/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

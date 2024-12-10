@@ -1,12 +1,9 @@
-import useUserTokenCookie from "../hook/useUserTokenCookie";
 import ChatRoom from "./ChatRoom";
 import Navbar from "./Navbar";
 import useFriendList from "../hook/useFriendList";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
-  const { tokenCookie } = useUserTokenCookie();
-
   const { data } = useFriendList();
   const navigate = useNavigate();
 
@@ -32,9 +29,6 @@ function Home() {
                 </div>
                 <div className="w-3/4 grid-rows-2 text-3xl p-2">
                   <div className="text-3xl">{friend.friendNickname}</div>
-                  <div className="text-lg text-gray-400">
-                    {friend.friendLatestMessage.message}
-                  </div>
                 </div>
               </div>
             ))}

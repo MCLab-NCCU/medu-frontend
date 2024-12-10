@@ -2,7 +2,7 @@ import { messageHistory } from "../datatype/User";
 
 async function getMessageHistory(token: string, id: string) {
   const res = await fetch(
-    "http://140.119.164.16:3000/api/message/messagehistory/" + id,
+    import.meta.env.VITE_SERVER_URL + "message/messagehistory/" + id,
     {
       method: "GET",
       headers: {

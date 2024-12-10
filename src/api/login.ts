@@ -1,9 +1,9 @@
 import { loginInfo } from "../datatype/User";
-import { JWT } from "../datatype/Jwt";
+import { JWT } from "../datatype/JWT";
 
 // src/api/loginAPI.ts
 async function login(formData: loginInfo) {
-  const res = await fetch("http://140.119.164.16:3000/api/user/login", {
+  const res = await fetch(import.meta.env.VITE_SERVER_URL + "user/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -4,7 +4,7 @@ import useMessageHistory from "../hook/useMessageHistory";
 import useNickname from "../hook/useNickname";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
-import useUserTokenCookie from "../hook/useUserTokenCookie";
+import { useWebSocketStore } from "../store/useWebsocket";
 
 type message = {
   id: string;
@@ -15,42 +15,12 @@ type message = {
 function ChatRoom() {
   const [searchParams] = useSearchParams();
   const target = searchParams.get("friendID");
-  const { tokenCookie } = useUserTokenCookie();
   const { data: messages, status: messageStatus } = useMessageHistory(target!);
   const { data: nickname, status: nicknameStatus } = useNickname(target!);
   const [sendcontent, setSendcontent] = useState<message[]>([]);
   const chatroomRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLInputElement>(null);
-
-  let ws = new WebSocket(
-    "ws://140.119.164.16:3000/socket?token=" + tokenCookie
-  );
-  ws.onopen = () => console.log("[open connection]");
-  ws.onmessage = (event) => {
-    console.log("收到服務器消息:", event.data);
-  };
-  ws.onclose = () => {
-    console.log("bye");
-    ws = new WebSocket("ws://140.119.164.16:3000/socket?token=" + tokenCookie);
-  };
-
-  /*useEffect(() => {
-    if (tokenCookie) {
-      const ws = new WebSocket(
-        "ws://140.119.164.16:3000/socket?token=" + tokenCookie
-      );
-      ws.onopen = () => console.log("[open connection]");
-      ws.onmessage = (event) => {
-        console.log("收到服務器消息:", event.data);
-      };
-
-      return () => {
-        if (ws) {
-          ws.close();
-        }
-      };
-    }
-  }, [tokenCookie]);*/
+  const ws = useWebSocketStore().socket;
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -74,12 +44,18 @@ function ChatRoom() {
       }
     };
 
-    ws.addEventListener("message", handleMessage);
+    ws!.addEventListener("message", handleMessage);
 
     return () => {
-      ws.removeEventListener("message", handleMessage);
+      ws!.removeEventListener("message", handleMessage);
     };
   }, [ws, target]);
+
+  useEffect(() => {
+    return () => {
+      setSendcontent([]);
+    };
+  }, [target]);
 
   useEffect(() => {
     if (chatroomRef.current) {
@@ -90,7 +66,7 @@ function ChatRoom() {
   const sendMessage = () => {
     if (contentRef.current?.value.trim()) {
       const value = contentRef.current.value.trim();
-      ws.send(
+      ws!.send(
         JSON.stringify({
           message: value,
           targetUserId: target,
