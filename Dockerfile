@@ -24,4 +24,4 @@ FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
 # 從 builder 階段裡的 /app/build 複製到目前位置（WORKDIR）
-COPY --from=builder /app/build .
+COPY --from=builder /app/dist .
