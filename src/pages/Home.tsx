@@ -1,31 +1,42 @@
 import ChatRoom from "./ChatRoom";
-import FriendList from "./FriendList";
-import Match from "./Match";
 import Navbar from "./Navbar";
+import useFriendList from "../hook/useFriendList";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
-  /*<div className="w-3/4 bg-[#fefefe] rounded-lg m-2 border-black border-2">
-        <Match />
-      </div>
-      <div className="w-3/4 bg-[#fefefe] rounded-lg m-2 border-black border-2 relative">
-        <ChatRoom />
-      </div>
-      
-      */
+  const { data } = useFriendList();
+  const navigate = useNavigate();
 
   return (
-    <div className="flex h-screen">
-      <div className="w-1/4 border-black rounded-lg mt-4">
+    <div className="flex">
+      <div className="w-1/4 border-black rounded-lg">
         <div className="h-[15%]">
           <Navbar />
         </div>
         <div className="border-black border-2"></div>
         <div className="mt-5 h-[80%] ">
-          <FriendList />
+          <div>
+            {data?.friendList.map((friend) => (
+              <div
+                key={friend.friendId}
+                className="flex grid-cols-2 my-2 cursor-pointer hover:bg-slate-300"
+                onClick={() => {
+                  navigate("?friendID=" + friend.friendId);
+                }}
+              >
+                <div className="w-20 border-2 rounded-full m-auto">
+                  <img src="src/assets/profile_photo.png" alt="Profile" />
+                </div>
+                <div className="w-3/4 grid-rows-2 text-3xl p-2">
+                  <div className="text-3xl">{friend.friendNickname}</div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="w-3/4 bg-[#fefefe] rounded-lg m-2 border-black border-2 relative">
+      <div className="w-3/4 bg-[#fefefe] rounded-lg border-black border-2 relative h-fit">
         <ChatRoom />
       </div>
     </div>

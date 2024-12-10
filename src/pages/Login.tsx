@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../api/loginAPI";
+import login from "../api/login";
+import useUserTokenCookie from "../hook/useUserTokenCookie";
+import { showToast } from "../utils/showtoast";
+import { useWebSocketStore } from "../store/useWebsocket";
 
 function Login() {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const connect = useWebSocketStore((state) => state.connect);
 
+  const { setUserTokenCookie } = useUserTokenCookie();
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,9 +28,13 @@ function Login() {
     console.log("Login Button Clicked!");
 
     try {
-      const response = await loginUser(formData);
+      const jwt = await login(formData);
+      setUserTokenCookie(jwt);
+      connect(import.meta.env.VITE_WEBSOCKET_URL + jwt.token);
+      showToast("success", "登入成功");
       navigate("/home");
     } catch (error) {
+      showToast("error", "帳密有誤");
       console.error(error); // Handle error
     }
   };

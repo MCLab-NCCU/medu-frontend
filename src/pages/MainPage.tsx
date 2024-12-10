@@ -1,20 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import Login from "./Login.tsx";
 
-const Navbar = () => {
-  return (
-    <nav className="bg-ao p-4">
-      <h1 className="text-white text-xl font-bold">Medu</h1>
-    </nav>
-  );
-};
-
-const MainPage = () => {
+function MainPage() {
   const navigate = useNavigate();
 
   return (
     <div className="flex flex-col h-screen">
-      <Navbar />
       <div className="flex flex-row h-screen">
         <div className="flex-1 flex flex-col shrink-0 items-center justify-center bg-white">
           <div className="relative left-48">
@@ -40,6 +31,6 @@ const MainPage = () => {
       </div>
     </div>
   );
-};
+}
 
 export default MainPage;

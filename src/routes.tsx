@@ -1,19 +1,18 @@
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import RootLayout from "./RootLayout";
-import MainPage from "./pages/MainPage.tsx";
 import Home from "./pages/Home.tsx";
 import Register from "./pages/Register.tsx";
-import Login from "./pages/Login.tsx";
-import Match from "./pages/Match";
+import MatchPage from "./pages/MatchPage.tsx";
+import MainPage from "./pages/MainPage.tsx";
 
 const routerData: RouteObject[] = [
   {
     Component: RootLayout,
     children: [
+      { path: "/Match", Component: MatchPage },
+      { path: "/Home", Component: Home },
+      { path: "/Register", Component: Register },
       { path: "/", Component: MainPage },
-      { path: "/home", Component: Home },
-      { path: "/register", Component: Register },
-      { path: "/login", Component: Login }
     ],
   },
 ];
