@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Login from "./Login.tsx";
+import Logo from "../assets/logos/logo-pre.png"
 
 function MainPage() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function MainPage() {
         <div className="flex-1 flex flex-col shrink-0 items-center justify-center bg-white">
           <div className="relative right-20">
             <img
-              src="/src/assets/logos/logo-pre.png"
+              src={Logo}
               alt=""
               className="w-60 mb-10 min-w-60"
             />
