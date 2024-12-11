@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import register from "../api/register";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
-import { showToast } from "../utils/showtoast";
+import Logo from "../assets/logos/logo.png";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -74,11 +74,7 @@ function Register() {
   return (
     <div className="flex flex-row h-screen">
       <div className="flex-1 flex flex-col shrink-0 items-center justify-center bg-white">
-        <img
-          src="/src/assets/logos/logo.png"
-          alt=""
-          className="w-60 mb-10 ml-20 min-w-60"
-        />
+        <img src={Logo} alt="" className="w-60 mb-10 ml-20 min-w-60" />
         <p className="ml-20 font-mono text-6xl text-font">Medu</p>
       </div>
       <div className="flex-1 bg-white">
@@ -186,7 +182,12 @@ function Register() {
             </form>
             <p className="mt-4 text-center">
               已經註冊過了嗎？
-              <a href="#" className="text-ao hover:underline">
+              <a
+                onClick={() => {
+                  navigate("/");
+                }}
+                className="text-ao hover:underline cursor-pointer"
+              >
                 登入
               </a>
             </p>
