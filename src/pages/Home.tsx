@@ -2,14 +2,14 @@ import ChatRoom from "./ChatRoom";
 import Navbar from "./Navbar";
 import useFriendList from "../hook/useFriendList";
 import { useNavigate } from "react-router-dom";
-import Profile_header from "../assets/profile_photo.png"
+import Profile_header from "../assets/profile_photo.png";
 
 function Home() {
   const { data } = useFriendList();
   const navigate = useNavigate();
 
   return (
-    <div className="flex">
+    <div className="flex h-[94vh]">
       <div className="w-1/4 border-black rounded-lg">
         <div className="h-[15%]">
           <Navbar />
