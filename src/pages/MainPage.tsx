@@ -8,14 +8,21 @@ function MainPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="relative w-full h-screen border-2 m-2 overflow-hidden">
-      <div className="absolute inset-0 w-[1500px*4] flex animate-slide">
-        <div className="bg-image1 w-[1500px] h-full" />
-        <div className="bg-image2 w-[1500px] h-full" />
-        <div className="bg-image1 w-[1500px] h-full" />
-        <div className="bg-image2 w-[1500px] h-full" />
+    <>
+      <div className="relative w-full h-screen overflow-hidden">
+        <div className="absolute flex inset-0 z-1 w-[1500px*4] blur-md brightness-75 opacity-80 animate-slide">
+          {/* Filter attributes to the background images*/}
+          <div className="bg-image1 w-[1500px] h-full" />{" "}
+          {/* bg-image defined in index.css */}
+          <div className="bg-image2 w-[1500px] h-full" />
+          <div className="bg-image1 w-[1500px] h-full" />
+          <div className="bg-image2 w-[1500px] h-full" />
+        </div>
+        <div className="absolute inset-0 flex justify-center items-center">
+          <Login />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
