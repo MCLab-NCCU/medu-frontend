@@ -76,10 +76,11 @@ function Login() {
         />
         <button
           type="submit"
-          className="w-full rounded-md bg-ao py-2 font-bold text-white transition duration-200 hover:bg-blue-500"
+          className="w-full rounded-md bg-ao py-2 mb-4 font-bold text-white transition duration-200 hover:bg-blue-500"
         >
           登入
         </button>
+        <button onClick={() => navigate("/register")}>註冊嗎？註冊！</button>
       </form>
     </div>
   );
