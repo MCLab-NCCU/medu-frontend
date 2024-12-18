@@ -40,7 +40,7 @@ function Login() {
   };
 
   return (
-    <div className="relative w-96 rounded-lg bg-shiro p-10 shadow-md">
+    <div className="relative w-96 rounded-2xl bg-shiro backdrop-filter backdrop-blur-sm bg-shiro/40 p-10 shadow-md">
       <form onSubmit={handleSubmit}>
         <label
           htmlFor="username"
@@ -53,7 +53,7 @@ function Login() {
           id="username"
           name="username"
           placeholder="輸入您的使用者名稱"
-          className="mb-4 block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
+          className="mb-4 block w-full rounded-2xl border border-gray-300 px-4 py-2 backdrop-filter backdrop-blur-sm bg-white/40 focus:border-ao focus:outline-none"
           value={formData.username}
           onChange={handleChange}
           required
@@ -69,17 +69,20 @@ function Login() {
           id="password"
           name="password"
           placeholder="輸入您的密碼"
-          className="mb-8 block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
+          className="mb-8 block w-full rounded-2xl border border-gray-300 px-4 py-2 backdrop-filter backdrop-blur-sm bg-white/40 focus:border-ao focus:outline-none"
           value={formData.password}
           onChange={handleChange}
           required
         />
         <button
           type="submit"
-          className="w-full rounded-md bg-ao py-2 font-bold text-white transition duration-200 hover:bg-blue-500"
+          className="w-full rounded-2xl bg-ao py-2 mb-4 font-bold text-white 
+          backdrop-filter backdrop-blur-sm bg-ao/70 
+          transition duration-200 hover:bg-blue-400"
         >
           登入
         </button>
+        <button onClick={() => navigate("/register")}>註冊嗎？註冊！</button>
       </form>
     </div>
   );
