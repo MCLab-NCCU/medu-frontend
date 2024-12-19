@@ -1,8 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import Login from "./Login.tsx";
-import Logo from "../assets/logos/logo-pre.png";
-import Background1 from "../assets/backgrounds/main-page-bg-1.png";
-import Background2 from "../assets/backgrounds/main-page-bg-2.png";
 
 function MainPage() {
   const navigate = useNavigate();
@@ -27,3 +24,19 @@ function MainPage() {
 }
 
 export default MainPage;
+
+// test account
+// {
+//   _id: ObjectId('675305cfd3fb155d8b744346'),
+//   profile: {
+//     nickname: 'yezyez',
+//     birthDate: ISODate('2016-05-18T00:00:00.000Z'),
+//     gender: 'male',
+//     preference: { matchRange: 'township' }
+//   },
+//   username: 'yezyez',
+//   password: '$2a$10$34Fq9L6U1BgnrkwWdW1axe1b.yd.UFUrYcUYmfDMC6jeh7KlvhUfi',
+//   createdAt: ISODate('2024-12-06T14:10:23.010Z'),
+//   updatedAt: ISODate('2024-12-06T14:10:23.010Z'),
+//   __v: 0
+// }

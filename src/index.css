@@ -15,6 +15,13 @@
 }
 
 @layer components {
+  .logo {
+    background-image: url("./assets/logos/logo-pre.png");
+    background-size: 30%;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
+  }
   .bg-image1 {
     background-image: url("./assets/backgrounds/main-page-bg-1.png");
     background-size: cover;
@@ -27,6 +34,16 @@
     background-position: left;
     flex-shrink: 0;
   }
+  .bg-image3 {
+    background-image: url("./assets/backgrounds/main-page-bg-3.png");
+    background-size: cover;
+    background-position: left;
+    flex-shrink: 0;
+  }
+
+  .opacity-gradient {
+    mask: linear-gradient(180deg, #000 70%, transparent);
+  }
 
   @keyframes slide {
     0% {
@@ -35,6 +52,20 @@
     100% {
       transform: translateX(calc(-1500px * 2));
     }
+  }
+
+  @keyframes pop {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  .pop-animation {
+    animation: pop 1.5s ease-in-out infinite;
   }
 
   .animate-slide {
