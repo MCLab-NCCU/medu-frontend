@@ -5,7 +5,7 @@ import useNickname from "../hook/useNickname";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useWebSocketStore } from "../store/useWebsocket";
-import Profile_header from "../assets/profile_photo.png"
+import Profile_header from "../assets/profile_photo.png";
 
 type message = {
   id: string;
@@ -94,8 +94,9 @@ function ChatRoom() {
   }
 
   return (
-    <div className="h-[94vh]">
-      <div className="flex rounded-md p-2 my-auto h-[15%] border-gray-400 border-b-2">
+    <div className="flex flex-col border grow rounded-md p-2">
+      {/* Message Target Info Section */}
+      <div className="flex p-2 border w-full min-h-20 m-0.5">
         <div className="rounded-full w-[8%] m-auto">
           <img src={Profile_header} alt="Profile" />
         </div>
@@ -104,7 +105,11 @@ function ChatRoom() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-scroll h-[74%] p-4" ref={chatroomRef}>
+      {/* Chatbox Section */}
+      <div
+        className="w-full flex-grow overflow-y-scroll border no-scrollbar m-0.5"
+        ref={chatroomRef}
+      >
         <div className="flex space-y-2 flex-col-reverse">
           {messages?.messageHistory.map((message) => (
             <div
@@ -145,22 +150,88 @@ function ChatRoom() {
         </div>
       </div>
 
-      <div className="bg-gray-50 rounded-md p-4 my-auto w-full flex absolute bottom-0">
-        <div className="w-full m-auto flex">
-          <input
-            type="text"
-            placeholder="輸入訊息..."
-            className="bg-[#fefefe] rounded-full h-16 w-[90%] text-3xl px-3 block"
-            ref={contentRef}
-          />
-          <HiOutlinePaperAirplane
-            className="text-6xl w-[10%] text-left cursor-pointer"
-            onClick={sendMessage}
-          />
-        </div>
+      {/* Message Input Section */}
+      <div className="flex p-2 border w-full min-h-12 m-0.5">
+        <input
+          type="text"
+          placeholder="輸入訊息..."
+          className="bg-[#fefefe] rounded-full h-16 w-[90%] text-3xl px-3 block"
+          ref={contentRef}
+        />
+        <HiOutlinePaperAirplane
+          className="text-6xl w-[10%] text-left cursor-pointer"
+          onClick={sendMessage}
+        />
       </div>
     </div>
   );
 }
 
 export default React.memo(ChatRoom);
+
+// <div className="h-[94vh]">
+//   <div className="flex rounded-md p-2 my-auto h-[15%] border-gray-400 border-b-2">
+//     <div className="rounded-full w-[8%] m-auto">
+//       <img src={Profile_header} alt="Profile" />
+//     </div>
+//     <div className="w-[85%] text-5xl px-10 my-auto">
+//       {nickname?.nickname}
+//     </div>
+//   </div>
+
+//   <div className="flex-1 overflow-y-scroll h-[74%] p-4" ref={chatroomRef}>
+// <div className="flex space-y-2 flex-col-reverse">
+//   {messages?.messageHistory.map((message) => (
+//     <div
+//       key={message._id}
+//       className={`flex ${
+//         message.fromUserId === target ? "justify-start" : "justify-end"
+//       } m-2`}
+//     >
+//       <div
+//         className={`${
+//           message.fromUserId === target
+//             ? "bg-[#bf8e68]"
+//             : "bg-[#ffdeaa]"
+//         } text-4xl text-black p-4 rounded-full max-w-5xl`}
+//       >
+//         {message.message}
+//       </div>
+//     </div>
+//   ))}
+// </div>
+// <div className="flex space-y-2 flex-col-reverse">
+//   {sendcontent?.map((message) => (
+//     <div
+//       key={message.id}
+//       className={`flex ${
+//         message.sender === target ? "justify-start" : "justify-end"
+//       } m-2`}
+//     >
+//       <div
+//         className={`${
+//           message.sender === target ? "bg-[#bf8e68]" : "bg-[#ffdeaa]"
+//         } text-4xl text-black p-4 rounded-full max-w-5xl`}
+//       >
+//         {message.content}
+//       </div>
+//     </div>
+//   ))}
+// </div>
+//   </div>
+
+//   <div className="bg-gray-50 rounded-md p-4 my-auto w-full flex absolute bottom-0">
+//     <div className="w-full m-auto flex">
+// <input
+//   type="text"
+//   placeholder="輸入訊息..."
+//   className="bg-[#fefefe] rounded-full h-16 w-[90%] text-3xl px-3 block"
+//   ref={contentRef}
+// />
+// <HiOutlinePaperAirplane
+//   className="text-6xl w-[10%] text-left cursor-pointer"
+//   onClick={sendMessage}
+// />
+//     </div>
+//   </div>
+// </div>;

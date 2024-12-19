@@ -42,3 +42,18 @@ type message = {
   __v: number;
   _id: string;
 };
+
+export type userInfo = {
+  accessToken: string;
+  refreshToken: string;
+  userProfile: userProfile;
+};
+
+type userProfile = {
+  birthDate: string;
+  gender: string;
+  location: string;
+  nickname: string;
+  preference: object;
+  profilePicturePath: string;
+};

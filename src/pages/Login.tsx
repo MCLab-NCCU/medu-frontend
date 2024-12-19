@@ -28,9 +28,9 @@ function Login() {
     console.log("Login Button Clicked!");
 
     try {
-      const jwt = await login(formData);
-      setUserTokenCookie(jwt);
-      connect(import.meta.env.VITE_WEBSOCKET_URL + jwt.token);
+      const userInfo = await login(formData);
+      setUserTokenCookie(userInfo.accessToken);
+      connect(import.meta.env.VITE_WEBSOCKET_URL + userInfo.accessToken);
       showToast("success", "登入成功");
       navigate("/home");
     } catch (error) {
