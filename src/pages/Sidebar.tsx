@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useFriendList from "../hook/useFriendList";
 import useUserTokenCookie from "../hook/useUserTokenCookie";
 import { showToast } from "../utils/showtoast";
 import Profile_header from "../assets/profile_photo.png";
 
-function Navbar() {
+function Sidebar() {
   const navigate = useNavigate();
-  const { data } = useFriendList();
+  const location = useLocation();
+  const { data: userFriends } = useFriendList();
   const { deleteUserTokenCookie } = useUserTokenCookie();
   const [isVisible, setIsVisible] = useState(false);
+
+  const isMatchPage = location.pathname === "/Match";
+  const isChatroomPage = location.pathname.includes("/Chat");
+
+  useEffect(() => {
+    if(isChatroomPage){
+      setIsVisible(true);
+    }
+  }, [isChatroomPage]);
 
   const slideToMessage = () => {
     setIsVisible(true);
@@ -21,17 +31,12 @@ function Navbar() {
     setIsVisible(false);
   };
 
-  function toMatch() {
-    navigate("/Match");
-  }
-  function toChatroom() {
-    navigate("/Home");
-  }
   function logout() {
     deleteUserTokenCookie();
     navigate("/");
     showToast("success", "登出");
   }
+
   return (
     <div className="flex flex-col border w-[350px] rounded-md p-2">
       <div className="flex p-2 border w-full min-h-20 m-0.5"></div>
@@ -52,20 +57,28 @@ function Navbar() {
         </button>
       </div>
       <div className="relative overflow-hidden border w-full h-full m-0.5">
+        <div className="absolute flex justify-center items-center">
+          <div className="text-font text-2xl">matching!</div>
+        </div>
         <div
-          className="flex absolute w-full h-full z-5 transition-all duration-200"
+          className="flex relative bg-white w-full h-full z-5 transition-all duration-200"
           style={{ right: isVisible ? "0" : "-350px" }} // Use inline style for sliding from the right
         >
           {/* Content of the sliding div */}
           {isVisible && (
             <div className="w-full overflow-x-hidden overflow-y-scroll no-scrollbar m-0.5">
               <div className="flex flex-col p-2 border w-full h-[1500px]">
-                {data?.friendList.map((friend) => (
+                {userFriends?.friendList.map((friend) => (
                   <div
                     key={friend.friendId}
                     className="flex w-full h-[50px] cursor-pointer hover:bg-slate-300"
                     onClick={() => {
-                      navigate("?friendID=" + friend.friendId);
+                      if(isMatchPage){
+                        navigate("/Chat/?friendID=" + friend.friendId);
+                      }
+                      if(isChatroomPage){
+                        navigate("?friendID=" + friend.friendId);
+                      }
                     }}
                   >
                     <div className="w-10 border-2 rounded-full m-auto">
@@ -85,7 +98,7 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Sidebar;
 
 // <div className="grid grid-raws-4 text-center h-full">
 //   <div className="flex grid-cols-3 h-4/5">

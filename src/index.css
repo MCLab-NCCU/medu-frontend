@@ -45,12 +45,39 @@
     mask: linear-gradient(180deg, #000 70%, transparent);
   }
 
-  @keyframes slide {
+  @keyframes background-scroll {
     0% {
       transform: translateX(0);
     }
     100% {
       transform: translateX(calc(-1500px * 2));
+    }
+  }
+
+  @keyframes card-slide-right {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes card-rotate-right {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(12deg);
+    }
+  }
+
+  @keyframes card-slide-left {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
     }
   }
 
@@ -68,8 +95,16 @@
     animation: pop 1.5s ease-in-out infinite;
   }
 
-  .animate-slide {
-    animation: slide 40s linear infinite;
+  .animate-bg-scroll {
+    animation: background-scroll 40s linear infinite;
+  }
+
+  .animate-card-slide-right {
+    animation: card-slide-right 0.5s ease-in-out forwards, card-rotate-right 0.5s ease-in-out forwards;
+  }
+
+  .animate-card-slide-left {
+    animation: card-slide-left 0.5s ease-in-out forwards;
   }
 }
 

@@ -5,9 +5,12 @@ import useNickname from "../hook/useNickname";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useWebSocketStore } from "../store/useWebsocket";
+
+import Sidebar from "./Sidebar";
+
 import Profile_header from "../assets/profile_photo.png";
 
-type message = {
+type content = {
   id: string;
   sender: string;
   content: string;
@@ -16,9 +19,9 @@ type message = {
 function ChatRoom() {
   const [searchParams] = useSearchParams();
   const target = searchParams.get("friendID");
-  const { data: messages, status: messageStatus } = useMessageHistory(target!);
+  const { data: historyMessages, status: historyMessagesStatus } = useMessageHistory(target!);
   const { data: nickname, status: nicknameStatus } = useNickname(target!);
-  const [sendcontent, setSendcontent] = useState<message[]>([]);
+  const [sendContent, setSendContent] = useState<content[]>([]);
   const chatroomRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLInputElement>(null);
   const ws = useWebSocketStore().socket;
@@ -31,7 +34,7 @@ function ChatRoom() {
 
         // 確保消息來自當前聊天對象
         if (data.fromUserId === target) {
-          setSendcontent((prev) => [
+          setSendContent((prev) => [
             {
               id: new Date().toISOString(),
               sender: data.fromUserId,
@@ -54,7 +57,7 @@ function ChatRoom() {
 
   useEffect(() => {
     return () => {
-      setSendcontent([]);
+      setSendContent([]);
     };
   }, [target]);
 
@@ -62,7 +65,7 @@ function ChatRoom() {
     if (chatroomRef.current) {
       chatroomRef.current.scrollTop = chatroomRef.current.scrollHeight;
     }
-  }, [sendcontent, messages]);
+  }, [sendContent, historyMessages]);
 
   const sendMessage = () => {
     if (contentRef.current?.value.trim()) {
@@ -73,7 +76,7 @@ function ChatRoom() {
           targetUserId: target,
         })
       );
-      setSendcontent((prev) => [
+      setSendContent((prev) => [
         { id: new Date().toISOString(), sender: "me", content: value },
         ...prev,
       ]);
@@ -81,7 +84,7 @@ function ChatRoom() {
     }
   };
 
-  if (messageStatus === "pending" || nicknameStatus === "pending") {
+  if (historyMessagesStatus === "pending" || nicknameStatus === "pending") {
     return <div>loading...</div>;
   }
 
@@ -92,6 +95,86 @@ function ChatRoom() {
       </div>
     );
   }
+
+  return (
+    <div className="flex flex-col border-2 justify-end max-w-screen min-h-screen">
+      <div className="relative bottom-4 flex w-full h-[90vh]">
+        <div className="flex p-2 gap-2 border-4 border-black grow min-h-full m-2">
+          <Sidebar />
+          <div className="flex flex-col border grow rounded-md p-2">
+            {/* Message Target Info Section */}
+            <div className="flex p-2 border w-full min-h-20 m-0.5">
+              <div className="rounded-full w-[8%] m-auto">
+                <img src={Profile_header} alt="Profile" />
+              </div>
+              <div className="w-[85%] text-5xl px-10 my-auto">
+                {nickname?.nickname}
+              </div>
+            </div>
+
+            {/* Chatbox Section */}
+            <div
+              className="w-full flex-grow overflow-y-scroll border no-scrollbar m-0.5"
+              ref={chatroomRef}
+            >
+              <div className="flex space-y-2 flex-col-reverse">
+                {historyMessages?.messageHistory.map((message) => (
+                  <div
+                    key={message._id}
+                    className={`flex ${
+                      message.fromUserId === target ? "justify-start" : "justify-end"
+                    } m-2`}
+                  >
+                    <div
+                      className={`${
+                        message.fromUserId === target
+                          ? "bg-[#bf8e68]"
+                          : "bg-[#ffdeaa]"
+                      } text-4xl text-black p-4 rounded-full max-w-5xl`}
+                    >
+                      {message.message}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex space-y-2 flex-col-reverse">
+                {sendContent?.map((content) => (
+                  <div
+                    key={content.id}
+                    className={`flex ${
+                      content.sender === target ? "justify-start" : "justify-end"
+                    } m-2`}
+                  >
+                    <div
+                      className={`${
+                        content.sender === target ? "bg-[#bf8e68]" : "bg-[#ffdeaa]"
+                      } text-4xl text-black p-4 rounded-full max-w-5xl`}
+                    >
+                      {content.content}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Message Input Section */}
+            <div className="flex p-2 border w-full min-h-12 m-0.5">
+              <input
+                type="text"
+                placeholder="輸入訊息..."
+                className="bg-[#fefefe] rounded-full h-16 w-[90%] text-3xl px-3 block"
+                ref={contentRef}
+              />
+              <HiOutlinePaperAirplane
+                className="text-6xl w-[10%] text-left cursor-pointer"
+                onClick={sendMessage}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="flex flex-col border grow rounded-md p-2">
@@ -111,7 +194,7 @@ function ChatRoom() {
         ref={chatroomRef}
       >
         <div className="flex space-y-2 flex-col-reverse">
-          {messages?.messageHistory.map((message) => (
+          {historyMessages?.messageHistory.map((message) => (
             <div
               key={message._id}
               className={`flex ${
@@ -131,19 +214,19 @@ function ChatRoom() {
           ))}
         </div>
         <div className="flex space-y-2 flex-col-reverse">
-          {sendcontent?.map((message) => (
+          {sendContent?.map((content) => (
             <div
-              key={message.id}
+              key={content.id}
               className={`flex ${
-                message.sender === target ? "justify-start" : "justify-end"
+                content.sender === target ? "justify-start" : "justify-end"
               } m-2`}
             >
               <div
                 className={`${
-                  message.sender === target ? "bg-[#bf8e68]" : "bg-[#ffdeaa]"
+                  content.sender === target ? "bg-[#bf8e68]" : "bg-[#ffdeaa]"
                 } text-4xl text-black p-4 rounded-full max-w-5xl`}
               >
-                {message.content}
+                {content.content}
               </div>
             </div>
           ))}

@@ -1,5 +1,6 @@
 import ChatRoom from "./ChatRoom";
-import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
+import MatchPage from "./MatchPage";
 import useFriendList from "../hook/useFriendList";
 import { useNavigate } from "react-router-dom";
 import Profile_header from "../assets/profile_photo.png";
@@ -12,8 +13,8 @@ function Home() {
     <div className="flex flex-col border-2 justify-end max-w-screen min-h-screen">
       <div className="relative bottom-4 flex w-full h-[90vh]">
         <div className="flex p-2 gap-2 border-4 border-black grow min-h-full m-2">
-          <Navbar />
-          <ChatRoom />
+          <Sidebar />
+          <MatchPage />
         </div>
       </div>
     </div>

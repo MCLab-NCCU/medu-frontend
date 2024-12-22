@@ -15,7 +15,7 @@ function MainPage() {
         <h1 className="relative top-2 text-white text-4xl font-bold">Medu</h1>
       </nav>
       <div className="relative w-full h-screen overflow-hidden">
-        <div className="absolute flex inset-0 z-1 w-[1500px*4] blur-md brightness-75 opacity-80 animate-slide">
+        <div className="absolute flex inset-0 z-1 w-[1500px*4] blur-md brightness-75 opacity-80 animate-bg-scroll">
           <div className="bg-image1 w-[1500px] h-full" />
           <div className="bg-image2 w-[1500px] h-full" />
           <div className="bg-image1 w-[1500px] h-full" />
