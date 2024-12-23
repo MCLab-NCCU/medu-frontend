@@ -1,4 +1,4 @@
-import { loginInfo } from "../datatype/User";
+import { loginInfo, userInfo } from "../datatype/User";
 import { JWT } from "../datatype/JWT";
 
 // src/api/loginAPI.ts
@@ -15,7 +15,7 @@ async function login(formData: loginInfo) {
     throw new Error("Network response was not ok");
   }
 
-  return res.json() as Promise<JWT>;
+  return res.json() as Promise<userInfo>;
 }
 
 export default login;

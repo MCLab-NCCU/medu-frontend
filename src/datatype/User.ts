@@ -19,7 +19,7 @@ export type loginInfo = {
   password: string;
 };
 
-export type friendlist = {
+export type userFriends = {
   friendList: [friendDetail];
 };
 
@@ -42,3 +42,32 @@ export type message = {
   __v: number;
   _id: string;
 };
+
+export type userInfo = {
+  accessToken: string;
+  refreshToken: string;
+  userProfile: userProfile;
+};
+
+type userProfile = {
+  birthDate: string;
+  gender: string;
+  location: string;
+  nickname: string;
+  preference: object;
+  profilePicturePath: string;
+};
+
+export type userMatch = {
+  matchCard: {
+    userId: string;
+    profile: matchCard;
+  }
+}
+
+type  matchCard = {
+  nickname: string;
+  birthDate: string;
+  gender: string;
+  preference: object;
+}

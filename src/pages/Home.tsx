@@ -16,6 +16,7 @@ function Home() {
         <div className="h-[15%]">
           <Navbar />
         </div>
+<<<<<<< HEAD
         <div className="border-black border-2"></div>
         <div className="mt-5 h-[80%] ">
           <FriendList />
@@ -24,6 +25,8 @@ function Home() {
 
       <div className="w-3/4 bg-[#fefefe] rounded-lg border-black border-2 relative h-fit">
         <ChatRoom />
+=======
+>>>>>>> b42f2b91ca2cd14f3b83ceec41f2158d5a0e5cbf
       </div>
     </div>
   );

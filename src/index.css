@@ -14,6 +14,100 @@
   }
 }
 
+@layer components {
+  .logo {
+    background-image: url("./assets/logos/logo-pre.png");
+    background-size: 30%;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
+  }
+  .bg-image1 {
+    background-image: url("./assets/backgrounds/main-page-bg-1.png");
+    background-size: cover;
+    background-position: left;
+    flex-shrink: 0;
+  }
+  .bg-image2 {
+    background-image: url("./assets/backgrounds/main-page-bg-2.png");
+    background-size: cover;
+    background-position: left;
+    flex-shrink: 0;
+  }
+  .bg-image3 {
+    background-image: url("./assets/backgrounds/main-page-bg-3.png");
+    background-size: cover;
+    background-position: left;
+    flex-shrink: 0;
+  }
+
+  .opacity-gradient {
+    mask: linear-gradient(180deg, #000 70%, transparent);
+  }
+
+  @keyframes background-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-1500px * 2));
+    }
+  }
+
+  @keyframes card-slide-right {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes card-rotate-right {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(12deg);
+    }
+  }
+
+  @keyframes card-slide-left {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes pop {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  .pop-animation {
+    animation: pop 1.5s ease-in-out infinite;
+  }
+
+  .animate-bg-scroll {
+    animation: background-scroll 40s linear infinite;
+  }
+
+  .animate-card-slide-right {
+    animation: card-slide-right 0.5s ease-in-out forwards, card-rotate-right 0.5s ease-in-out forwards;
+  }
+
+  .animate-card-slide-left {
+    animation: card-slide-left 0.5s ease-in-out forwards;
+  }
+}
+
 html {
   font-size: 5px;
   @screen md {

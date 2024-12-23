@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import register from "../api/register";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
-import Logo from "../assets/logos/logo.png";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -72,128 +71,121 @@ function Register() {
   };
 
   return (
-    <div className="flex flex-row h-screen">
-      <div className="flex-1 flex flex-col shrink-0 items-center justify-center bg-white">
-        <img src={Logo} alt="" className="w-60 mb-10 ml-20 min-w-60" />
-        <p className="ml-20 font-mono text-6xl text-font">Medu</p>
+    <div className="relative flex-col w-96 rounded-2xl bg-shiro backdrop-filter backdrop-blur-sm bg-shiro/40 p-10 shadow-md">
+      <h1 className="text-ao mb-6 text-center font-bold text-2xl md:text-xl">
+        建立你的帳號吧！
+      </h1>
+      <div className="w-full m-2 overflow-y-scroll no-scrollbar h-[300px] mb-6">
+        <form onSubmit={handleSubmit}>
+          <label
+            htmlFor="username"
+            className="mb-2 block text-left text-sm font-bold text-font"
+          >
+            使用者名稱：
+          </label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="輸入您的使用者名稱"
+            className="mb-4 block w-full rounded-md text-sm border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
+
+          <label
+            htmlFor="nickname"
+            className="mb-2 block text-left text-sm font-bold text-font"
+          >
+            昵稱：
+          </label>
+          <input
+            type="text"
+            id="nickname"
+            name="nickname"
+            placeholder="輸入您的昵稱"
+            className="mb-4 block w-full rounded-md text-sm border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
+            value={formData.nickname}
+            onChange={handleChange}
+            required
+          />
+
+          <label
+            htmlFor="password"
+            className="mb-2 block text-left text-sm font-bold text-font"
+          >
+            密碼：
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="輸入您的密碼"
+            className="mb-4 block w-full rounded-md text-sm border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+
+          {/* Gender Selection */}
+          <label
+            htmlFor="gender"
+            className="mb-2 block text-left text-sm font-bold text-font"
+          >
+            性別：
+          </label>
+          <select
+            id="gender"
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+            className="mb-4 block w-full rounded-md text-sm border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
+            required
+          >
+            <option value="">選擇性別</option>
+            <option value="male">男性</option>
+            <option value="female">女性</option>
+            <option value="other">其他</option>
+          </select>
+
+          {/* Birthday Input */}
+          <label
+            htmlFor="birthDate"
+            className="mb-2 block text-left text-sm font-bold text-font"
+          >
+            生日：
+          </label>
+          <input
+            ref={birthdayInputRef}
+            type="text" // Use text type for Flatpickr to work correctly
+            id="birthDate"
+            name="birthDate"
+            placeholder="選擇你的生日"
+            className="mb-8 block w-full rounded-md text-sm border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
+          />
+        </form>
       </div>
-      <div className="flex-1 bg-white">
-        <div className="bg-main-white relative flex min-h-screen flex-col overflow-hidden items-center justify-center">
-          <div className="relative w-96 rounded-lg bg-shiro p-10 shadow-md mr-40">
-            <h1 className="text-ao mb-6 text-center text-3xl mt-4">
-              建立你的帳號吧！
-            </h1>
-            <form onSubmit={handleSubmit}>
-              <label
-                htmlFor="username"
-                className="mb-2 block text-left font-bold text-font"
-              >
-                使用者名稱：
-              </label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder="輸入您的使用者名稱"
-                className="mb-4 block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
-                value={formData.username}
-                onChange={handleChange}
-                required
-              />
 
-              <label
-                htmlFor="nickname"
-                className="mb-2 block text-left font-bold text-gray-700"
-              >
-                昵稱：
-              </label>
-              <input
-                type="text"
-                id="nickname"
-                name="nickname"
-                placeholder="輸入您的昵稱"
-                className="mb-4 block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
-                value={formData.nickname}
-                onChange={handleChange}
-                required
-              />
+      {/* Submit Buttons */}
+      <button
+        type="submit"
+        className="w-full rounded-md bg-ao py-2 font-bold text-white text-sm transition duration-200 hover:bg-blue-500 mb-4"
+      >
+        註冊
+      </button>
 
-              <label
-                htmlFor="password"
-                className="mb-2 block text-left font-bold text-gray-700"
-              >
-                密碼：
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="輸入您的密碼"
-                className="mb-4 block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-
-              {/* Gender Selection */}
-              <label
-                htmlFor="gender"
-                className="mb-2 block text-left font-bold text-gray-700"
-              >
-                性別：
-              </label>
-              <select
-                id="gender"
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                className="mb-4 block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
-                required
-              >
-                <option value="">選擇性別</option>
-                <option value="male">男性</option>
-                <option value="female">女性</option>
-                <option value="other">其他</option>
-              </select>
-
-              {/* Birthday Input */}
-              <label
-                htmlFor="birthDate"
-                className="mb-2 block text-left font-bold text-gray-700"
-              >
-                生日：
-              </label>
-              <input
-                ref={birthdayInputRef}
-                type="text" // Use text type for Flatpickr to work correctly
-                id="birthDate"
-                name="birthDate"
-                placeholder="選擇你的生日"
-                className="mb-8 block w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-400 focus:outline-none"
-              />
-
-              {/* Submit Buttons */}
-              <button
-                type="submit"
-                className="w-full rounded-md bg-ao py-2 font-bold text-white transition duration-200 hover:bg-blue-500 mb-2"
-              >
-                註冊
-              </button>
-            </form>
-            <p className="mt-4 text-center">
-              已經註冊過了嗎？
-              <a
-                onClick={() => {
-                  navigate("/");
-                }}
-                className="text-ao hover:underline cursor-pointer"
-              >
-                登入
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
+      <p className="text-center">
+        已經註冊過了嗎？
+        <a
+          onClick={() => {
+            navigate("/");
+          }}
+          className="text-ao font-bold hover:underline cursor-pointer"
+        >
+          登入
+        </a>
+      </p>
     </div>
   );
 }

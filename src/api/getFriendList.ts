@@ -1,4 +1,4 @@
-import { friendlist } from "../datatype/User";
+import { userFriends } from "../datatype/User";
 
 async function getFriendList(token: string) {
   const res = await fetch(
@@ -15,7 +15,7 @@ async function getFriendList(token: string) {
     throw new Error("Network response was not ok");
   }
 
-  return res.json() as Promise<friendlist>;
+  return res.json() as Promise<userFriends>;
 }
 
 export default getFriendList;
