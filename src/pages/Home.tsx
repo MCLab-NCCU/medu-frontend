@@ -3,10 +3,12 @@ import Navbar from "./Navbar";
 import useFriendList from "../hook/useFriendList";
 import { useNavigate } from "react-router-dom";
 import Profile_header from "../assets/profile_photo.png";
+import FriendList from "./FriendList";
 
 function Home() {
-  const { data } = useFriendList();
   const navigate = useNavigate();
+
+  //ws.onmessage()
 
   return (
     <div className="flex h-[94vh]">
@@ -16,24 +18,7 @@ function Home() {
         </div>
         <div className="border-black border-2"></div>
         <div className="mt-5 h-[80%] ">
-          <div>
-            {data?.friendList.map((friend) => (
-              <div
-                key={friend.friendId}
-                className="flex grid-cols-2 my-2 cursor-pointer hover:bg-slate-300"
-                onClick={() => {
-                  navigate("?friendID=" + friend.friendId);
-                }}
-              >
-                <div className="w-20 border-2 rounded-full m-auto">
-                  <img src={Profile_header} alt="Profile" />
-                </div>
-                <div className="w-3/4 grid-rows-2 text-3xl p-2">
-                  <div className="text-3xl">{friend.friendNickname}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <FriendList />
         </div>
       </div>
 

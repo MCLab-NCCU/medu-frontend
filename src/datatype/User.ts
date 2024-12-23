@@ -33,7 +33,7 @@ export type messageHistory = {
   messageHistory: [message];
 };
 
-type message = {
+export type message = {
   createdAt: string;
   fromUserId: string;
   message: string;
