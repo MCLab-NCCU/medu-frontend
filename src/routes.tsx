@@ -1,8 +1,9 @@
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import RootLayout from "./RootLayout";
 import Home from "./pages/Home.tsx";
-import Register from "./pages/Register.tsx";
+import RegisterPage from "./pages/RegisterPage.tsx";
 import MatchPage from "./pages/MatchPage.tsx";
+import ChatRoom from "./pages/ChatRoom.tsx";
 import MainPage from "./pages/MainPage.tsx";
 
 const routerData: RouteObject[] = [
@@ -10,8 +11,9 @@ const routerData: RouteObject[] = [
     Component: RootLayout,
     children: [
       { path: "/Match", Component: MatchPage },
+      { path: "/Chat", Component: ChatRoom },
       { path: "/Home", Component: Home },
-      { path: "/Register", Component: Register },
+      { path: "/Register", Component: RegisterPage },
       { path: "/", Component: MainPage },
     ],
   },

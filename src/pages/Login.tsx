@@ -28,11 +28,12 @@ function Login() {
     console.log("Login Button Clicked!");
 
     try {
-      const jwt = await login(formData);
-      setUserTokenCookie(jwt);
-      connect(import.meta.env.VITE_WEBSOCKET_URL + jwt.token);
+      const userInfo = await login(formData);
+      setUserTokenCookie(userInfo.accessToken);
+      connect(import.meta.env.VITE_WEBSOCKET_URL + userInfo.accessToken);
+      console.log(userInfo.accessToken);
       showToast("success", "登入成功");
-      navigate("/home");
+      navigate("/Match");
     } catch (error) {
       showToast("error", "帳密有誤");
       console.error(error); // Handle error
@@ -82,7 +83,7 @@ function Login() {
         >
           登入
         </button>
-        <button onClick={() => navigate("/register")}>註冊嗎？註冊！</button>
+        <button onClick={() => navigate("/Register")}>註冊嗎？註冊！</button>
       </form>
     </div>
   );

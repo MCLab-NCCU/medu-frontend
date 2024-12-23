@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
+import Logo from "./assets/logos/logo-pre.png";
 
 function Header() {
   return (
-    <nav className="absolute w-full z-10 bg-ao p-4">
-      <h1 className="text-white text-xl font-bold">Medu</h1>
+    <nav className="absolute w-full h-[85px] z-10 bg-ao p-4 opacity-gradient">
+      <h1 className="relative left-4 text-white text-2xl font-bold">Medu</h1>
     </nav>
   );
 }

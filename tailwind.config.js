@@ -31,6 +31,6 @@ module.exports = {
         font: "#001427",
       },
     },
-    plugins: [require("daisyui")],
+    plugins: [require("daisyui"), require("tailwind-gradient-mask-image")],
   },
 };

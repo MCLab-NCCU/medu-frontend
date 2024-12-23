@@ -8,8 +8,8 @@ function useUserTokenCookie() {
 
   const tokenCookie = cookies.userToken as string | undefined;
 
-  function setUserTokenCookie(jwt: JWT) {
-    setCookie(userTokenName, jwt.token);
+  function setUserTokenCookie(jwt: string) {
+    setCookie(userTokenName, jwt);
   }
 
   function deleteUserTokenCookie() {
