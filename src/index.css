@@ -45,6 +45,30 @@
     mask: linear-gradient(180deg, #000 70%, transparent);
   }
 
+  .underline-button {
+    position: relative;
+    padding: 3px;
+    border-radius: 3px;
+    background-color: white;
+    cursor: pointer;
+  }
+
+  .underline-button::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px; /* Adjusts the distance below the button */
+    height: 3px; /* Height of the underline */
+    background-color: black; /* Color of the underline */
+    transform: scaleX(0); /* Initially hidden */
+    transition: transform 0.1s ease; /* Animation for smooth appearance */
+  }
+
+  .underline-button.active::after {
+    transform: scaleX(1); /* Show underline when active */
+  }
+
   @keyframes background-scroll {
     0% {
       transform: translateX(0);
@@ -56,28 +80,43 @@
 
   @keyframes card-slide-right {
     0% {
-      transform: translateX(0);
+      transform: translateX(0) rotate(0);
+      opacity: 1;
+    }
+    60% {
+      opacity: 0;
     }
     100% {
-      transform: translateX(100%);
-    }
-  }
-
-  @keyframes card-rotate-right {
-    0% {
-      transform: rotate(0);
-    }
-    100% {
-      transform: rotate(12deg);
+      transform: translateX(70%) rotate(24deg);
+      opacity: 0;
     }
   }
 
   @keyframes card-slide-left {
     0% {
-      transform: translateX(0);
+      transform: translateX(0) rotate(0);
+      opacity: 1;
+    }
+    60% {
+      opacity: 0;
     }
     100% {
-      transform: translateX(-100%);
+      transform: translateX(-70%) rotate(-24deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes card-blob-up {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    90% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
     }
   }
 
@@ -100,11 +139,15 @@
   }
 
   .animate-card-slide-right {
-    animation: card-slide-right 0.5s ease-in-out forwards, card-rotate-right 0.5s ease-in-out forwards;
+    animation: card-slide-right 0.5s ease-in-out forwards;
   }
 
   .animate-card-slide-left {
     animation: card-slide-left 0.5s ease-in-out forwards;
+  }
+
+  .animate-card-blob-up {
+    animation: card-blob-up 0.7s ease-in-out forwards;
   }
 }
 
