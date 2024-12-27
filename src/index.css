@@ -130,8 +130,12 @@
     }
   }
 
-  .pop-animation {
+  .pop-logo-animation {
     animation: pop 1.5s ease-in-out infinite;
+  }
+
+  .pop-button-animation {
+    animation: pop 1s ease-in-out infinite;
   }
 
   .animate-bg-scroll {

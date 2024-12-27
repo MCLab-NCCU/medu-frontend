@@ -12,15 +12,17 @@ function Sidebar() {
   const location = useLocation();
   const { data: userFriends } = useFriendList();
   const { deleteUserTokenCookie } = useUserTokenCookie();
-  const [isVisible, setIsVisible] = useState(false);
+  const [isMessageVisible, setIsMessageVisible] = useState(false);
   const [activeButton, setActiveButton] = useState("matching");
+  const [switchProfile, setSwitchProfile] = useState(""); // Switch between "/Home" and "/Profile"
 
   const isMatchPage = location.pathname === "/Match";
   const isChatroomPage = location.pathname.includes("/Chat");
 
   useEffect(() => {
     if (isChatroomPage) {
-      setIsVisible(true);
+      setIsMessageVisible(true);
+      setActiveButton("message");
     }
   }, [isChatroomPage]);
 
@@ -29,11 +31,11 @@ function Sidebar() {
   };
 
   const slideToMessage = () => {
-    setIsVisible(true);
+    setIsMessageVisible(true);
   };
 
   const slideToMatching = () => {
-    setIsVisible(false);
+    setIsMessageVisible(false);
   };
 
   function logout() {
@@ -45,13 +47,20 @@ function Sidebar() {
   return (
     <div className="flex flex-col border w-[350px] rounded-md p-2">
       {/* Profile/Editting Section */}
-      <div className="flex p-2 items-center border w-full min-h-20 m-0.5">
-        <div className="w-10 border rounded-full m-auto">
-          <img src={Profile_header} alt="Profile" />
-        </div>
-        <div className="relative w-4/5">
-          <p className="text-xl">Nickname</p>
-        </div>
+      <div className="flex p-2 border w-full min-h-20 m-0.5">
+        <button
+          className="flex w-3/5 p-2 justify-center items-center hover:-translate-y-0.5 hover:bg-slate-200 rounded-md"
+          onClick={() => {
+            navigate("/Profile");
+          }}
+        >
+          <div className="relative w-10 border left-1 rounded-full">
+            <img src={Profile_header} alt="Profile" />
+          </div>
+          <div className="relative w-4/5">
+            <p className="text-xl">Nickname</p>
+          </div>
+        </button>
       </div>
 
       {/* Button Section */}
@@ -85,25 +94,26 @@ function Sidebar() {
       {/* Matching/Message Section */}
       <div className="relative overflow-hidden border w-full h-full m-0.5">
         {/* Matching Section */}
-        <div className="absolute flex w-full h-full justify-center items-center">
+        <div className="absolute flex flex-col w-full h-full justify-center items-center">
           <button
-            className="text-font text-2xl p-4 rounded-full hover:-translate-y-1 hover:bg-slate-200"
+            className="text-font text-2xl p-4 rounded-lg mb-2 hover:-translate-y-1 hover:bg-slate-200"
             onClick={() => {
               navigate("/Match");
             }}
           >
             matching!
           </button>
+          <p>點擊配對開始尋找你今天的好飯友！</p>
         </div>
 
         {/* Message Section */}
         <div
           className="flex relative bg-white w-full h-full z-5 transition-all duration-200"
-          style={{ right: isVisible ? "0" : "-350px" }} // Use inline style for sliding from the right
+          style={{ right: isMessageVisible ? "0" : "-350px" }} // Use inline style for sliding from the right
         >
           {/* Content of the sliding div */}
-          {isVisible && (
-            <div className="w-full h-full bg-shiro overflow-x-hidden overflow-y-scroll no-scrollbar m-0.5">
+          {isMessageVisible && (
+            <div className="w-full h-full bg-shiro shadow-md shadow-inner overflow-x-hidden overflow-y-scroll no-scrollbar m-0.5">
               <div className="flex flex-col p-2 gap-0.5 border w-full">
                 {userFriends?.friendList.map((friend) => (
                   <div
