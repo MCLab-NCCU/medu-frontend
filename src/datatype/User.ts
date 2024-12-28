@@ -47,9 +47,10 @@ export type userInfo = {
   accessToken: string;
   refreshToken: string;
   userProfile: userProfile;
+  userId: string;
 };
 
-type userProfile = {
+export type userProfile = {
   birthDate: string;
   gender: string;
   location: string;
@@ -62,12 +63,12 @@ export type userMatch = {
   matchCard: {
     userId: string;
     profile: matchCard;
-  }
-}
+  };
+};
 
-type  matchCard = {
+type matchCard = {
   nickname: string;
   birthDate: string;
   gender: string;
   preference: object;
-}
+};

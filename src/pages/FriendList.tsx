@@ -4,9 +4,11 @@ import Profile_header from "../assets/profile_photo.png";
 import useFriendList from "../hook/useFriendList";
 import { useEffect, useState } from "react";
 import { useWebSocketStore } from "../store/useWebsocket";
+import useUserInfoCookie from "../hook/useUserInfoCookie";
 
 function FriendList() {
   const navigate = useNavigate();
+  const { accessToken } = useUserInfoCookie();
   const { data, status } = useFriendList();
   const defaultFriends = new Array<friendDetail>();
   const [friendList, setFriendList] = useState(defaultFriends);

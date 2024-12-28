@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import useUserTokenCookie from "./useUserTokenCookie";
 import getFriendList from "../api/getFriendList";
+import useUserInfoCookie from "./useUserInfoCookie";
 
 function useFriendList() {
-  const { tokenCookie } = useUserTokenCookie();
+  const { accessToken } = useUserInfoCookie();
   return useQuery({
-    queryKey: ["friendList", tokenCookie],
-    queryFn: () => getFriendList(tokenCookie!),
+    queryKey: ["friendList", accessToken],
+    queryFn: () => getFriendList(accessToken),
   });
 }
 

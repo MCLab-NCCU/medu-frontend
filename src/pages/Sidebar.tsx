@@ -3,25 +3,43 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router-dom";
 import useFriendList from "../hook/useFriendList";
-import useUserTokenCookie from "../hook/useUserTokenCookie";
 import { showToast } from "../utils/showtoast";
 import Profile_header from "../assets/profile_photo.png";
+import useUserInfoCookie from "../hook/useUserInfoCookie";
+import getFriendList from "../api/getFriendList";
+import { error } from "console";
+import JWTdecoder from "../utils/JWTdecoder";
+import refresh from "../api/refresh";
 
 function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { data: userFriends } = useFriendList();
-  const { deleteUserTokenCookie } = useUserTokenCookie();
+  const { refreshAccessCookie, deleteCookies, accessToken, refreshToken, ID } =
+    useUserInfoCookie();
+  const { data: userFriends, status, error } = useFriendList();
   const [isVisible, setIsVisible] = useState(false);
 
   const isMatchPage = location.pathname === "/Match";
   const isChatroomPage = location.pathname.includes("/Chat");
 
   useEffect(() => {
-    if(isChatroomPage){
+    if (isChatroomPage) {
       setIsVisible(true);
     }
   }, [isChatroomPage]);
+
+  useEffect(() => {
+    if (status === "error") {
+      checkValid();
+    }
+  }, [status]);
+
+  async function checkValid() {
+    if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
+      const newToken = await refresh(ID, refreshToken);
+      refreshAccessCookie(newToken);
+    }
+  }
 
   const slideToMessage = () => {
     setIsVisible(true);
@@ -32,7 +50,7 @@ function Sidebar() {
   };
 
   function logout() {
-    deleteUserTokenCookie();
+    deleteCookies();
     navigate("/");
     showToast("success", "登出");
   }
@@ -73,10 +91,10 @@ function Sidebar() {
                     key={friend.friendId}
                     className="flex w-full h-[50px] cursor-pointer hover:bg-slate-300"
                     onClick={() => {
-                      if(isMatchPage){
+                      if (isMatchPage) {
                         navigate("/Chat/?friendID=" + friend.friendId);
                       }
-                      if(isChatroomPage){
+                      if (isChatroomPage) {
                         navigate("?friendID=" + friend.friendId);
                       }
                     }}

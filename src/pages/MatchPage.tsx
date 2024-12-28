@@ -5,16 +5,21 @@ import Card from "./Card";
 import { IoHeart } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { userMatch } from "../datatype/User";
+import JWTdecoder from "../utils/JWTdecoder";
+import refresh from "../api/refresh";
+import useUserInfoCookie from "../hook/useUserInfoCookie";
 
 function MatchPage() {
   const { fetchMatchCard, data: card } = useMatchCard();
   const sliderRef = useRef<HTMLDivElement>(null);
   const [animation, setAnimation] = useState("");
   const [triggerFetch, setTriggerFetch] = useState(false);
+  const { refreshAccessCookie, accessToken, refreshToken } =
+    useUserInfoCookie();
 
   useEffect(() => {
     fetchMatchCard();
-    if(card){
+    if (card) {
       console.log(card.matchCard.userId);
       console.log(card.matchCard.profile.nickname);
       console.log(card.matchCard.profile.gender);
@@ -30,50 +35,67 @@ function MatchPage() {
     }
   }, [card]); // This effect runs only when card is updated
 
+  useEffect(() => {
+    checkValid();
+  }, []);
+
+  async function checkValid() {
+    if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
+      const newToken = await refresh(accessToken, refreshToken);
+      refreshAccessCookie(newToken);
+    }
+  }
+
   const handleLike = () => {
-    setAnimation('animate-card-slide-right');
+    setAnimation("animate-card-slide-right");
     setTimeout(() => {
-      setAnimation('');
+      setAnimation("");
       setTriggerFetch(!triggerFetch);
     }, 500);
   };
 
   const handleDislike = () => {
-    setAnimation('animate-card-slide-left -rotate-12');
+    setAnimation("animate-card-slide-left -rotate-12");
     setTimeout(() => {
-      setAnimation('');
+      setAnimation("");
       setTriggerFetch(!triggerFetch);
     }, 500);
   };
 
   return (
     <div className="flex flex-col border-2 justify-end max-w-screen min-h-screen">
-    <div className="relative bottom-4 flex w-full h-[90vh]">
-      <div className="flex p-2 gap-2 border-4 border-black grow min-h-full m-2">
-        <Sidebar />
-        <div className="flex flex-col justify-center items-center border grow rounded-md p-2">
-          <div className={`w-[300px] border-2 transition-transform duration-500 ${animation}`}>
-            {card && 
-            <Card nickname={card.matchCard.profile.nickname} gender={card.matchCard.profile.gender} />}
-          </div>
-          <div className="grid grid-cols-2 gap-16 mt-4">
-            <button
+      <div className="relative bottom-4 flex w-full h-[90vh]">
+        <div className="flex p-2 gap-2 border-4 border-black grow min-h-full m-2">
+          <Sidebar />
+          <div className="flex flex-col justify-center items-center border grow rounded-md p-2">
+            <div
+              className={`w-[300px] border-2 transition-transform duration-500 ${animation}`}
+            >
+              {card && (
+                <Card
+                  nickname={card.matchCard.profile.nickname}
+                  gender={card.matchCard.profile.gender}
+                />
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-16 mt-4">
+              <button
                 onClick={handleDislike}
                 className="rounded-full w-16 h-16 border-2 border-black justify-items-center"
-            >
-              <RxCross2 />
-            </button>
-            <button
-              onClick={handleLike}
-              className="rounded-full w-16 h-16 border-2 border-black justify-items-center justify-self-end"
-            >
-              <IoHeart />
-            </button>
+              >
+                <RxCross2 />
+              </button>
+              <button
+                onClick={handleLike}
+                className="rounded-full w-16 h-16 border-2 border-black justify-items-center justify-self-end"
+              >
+                <IoHeart />
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   );
 }
 

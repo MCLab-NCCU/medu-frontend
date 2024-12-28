@@ -9,6 +9,9 @@ import { useWebSocketStore } from "../store/useWebsocket";
 import Sidebar from "./Sidebar";
 
 import Profile_header from "../assets/profile_photo.png";
+import refresh from "../api/refresh";
+import JWTdecoder from "../utils/JWTdecoder";
+import useUserInfoCookie from "../hook/useUserInfoCookie";
 
 type content = {
   id: string;
@@ -19,12 +22,19 @@ type content = {
 function ChatRoom() {
   const [searchParams] = useSearchParams();
   const target = searchParams.get("friendID");
-  const { data: historyMessages, status: historyMessagesStatus } = useMessageHistory(target!);
+  const {
+    data: historyMessages,
+    status: historyMessagesStatus,
+    refetch,
+  } = useMessageHistory(target!);
   const { data: nickname, status: nicknameStatus } = useNickname(target!);
   const [sendContent, setSendContent] = useState<content[]>([]);
   const chatroomRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLInputElement>(null);
   const ws = useWebSocketStore().socket;
+  const connect = useWebSocketStore((state) => state.connect);
+  const { refreshAccessCookie, accessToken, refreshToken, ID } =
+    useUserInfoCookie();
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -56,6 +66,9 @@ function ChatRoom() {
   }, [ws, target]);
 
   useEffect(() => {
+    refetch();
+    checkValid();
+
     return () => {
       setSendContent([]);
     };
@@ -66,6 +79,25 @@ function ChatRoom() {
       chatroomRef.current.scrollTop = chatroomRef.current.scrollHeight;
     }
   }, [sendContent, historyMessages]);
+
+  useEffect(() => {
+    if (historyMessagesStatus === "error") {
+      checkValid();
+    }
+  }, [historyMessagesStatus]);
+
+  console.log(historyMessages);
+
+  async function checkValid() {
+    if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
+      const newToken = await refresh(ID, refreshToken);
+      refreshAccessCookie(newToken);
+      refetch();
+      ws.close();
+      connect(import.meta.env.VITE_WEBSOCKET_URL + newToken.accessToken);
+      console.log(2);
+    }
+  }
 
   const sendMessage = () => {
     if (contentRef.current?.value.trim()) {
@@ -122,7 +154,9 @@ function ChatRoom() {
                   <div
                     key={message._id}
                     className={`flex ${
-                      message.fromUserId === target ? "justify-start" : "justify-end"
+                      message.fromUserId === target
+                        ? "justify-start"
+                        : "justify-end"
                     } m-2`}
                   >
                     <div
@@ -142,12 +176,16 @@ function ChatRoom() {
                   <div
                     key={content.id}
                     className={`flex ${
-                      content.sender === target ? "justify-start" : "justify-end"
+                      content.sender === target
+                        ? "justify-start"
+                        : "justify-end"
                     } m-2`}
                   >
                     <div
                       className={`${
-                        content.sender === target ? "bg-[#bf8e68]" : "bg-[#ffdeaa]"
+                        content.sender === target
+                          ? "bg-[#bf8e68]"
+                          : "bg-[#ffdeaa]"
                       } text-4xl text-black p-4 rounded-full max-w-5xl`}
                     >
                       {content.content}
@@ -250,7 +288,7 @@ function ChatRoom() {
   );
 }
 
-export default React.memo(ChatRoom);
+export default ChatRoom;
 
 // <div className="h-[94vh]">
 //   <div className="flex rounded-md p-2 my-auto h-[15%] border-gray-400 border-b-2">

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import login from "../api/login";
-import useUserTokenCookie from "../hook/useUserTokenCookie";
 import { showToast } from "../utils/showtoast";
 import { useWebSocketStore } from "../store/useWebsocket";
+import useUserInfoCookie from "../hook/useUserInfoCookie";
+import JWTdecoder from "../utils/JWTdecoder";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -12,7 +13,7 @@ function Login() {
   });
   const connect = useWebSocketStore((state) => state.connect);
 
-  const { setUserTokenCookie } = useUserTokenCookie();
+  const { setCookies } = useUserInfoCookie();
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,9 +30,9 @@ function Login() {
 
     try {
       const userInfo = await login(formData);
-      setUserTokenCookie(userInfo.accessToken);
+      setCookies(userInfo);
+      console.log(userInfo.refreshToken);
       connect(import.meta.env.VITE_WEBSOCKET_URL + userInfo.accessToken);
-      console.log(userInfo.accessToken);
       showToast("success", "登入成功");
       navigate("/Match");
     } catch (error) {

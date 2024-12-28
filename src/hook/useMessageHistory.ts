@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import useUserTokenCookie from "./useUserTokenCookie";
 import getMessageHistory from "../api/getMessageHistory";
+import useUserInfoCookie from "./useUserInfoCookie";
 
 function useMessageHistory(id: string) {
-  const { tokenCookie } = useUserTokenCookie();
+  const { accessToken } = useUserInfoCookie();
   return useQuery({
     queryKey: ["message", id],
-    queryFn: () => getMessageHistory(tokenCookie!, id),
+    queryFn: () => getMessageHistory(id, accessToken),
+    enabled: false,
   });
 }
 
