@@ -1,20 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { IoSettingsOutline } from "react-icons/io5";
-import { IoIosLogOut } from "react-icons/io";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import useFriendList from "../hook/useFriendList";
+import useProfilePicture from "../hook/useProfilePicture";
 import useUserTokenCookie from "../hook/useUserTokenCookie";
+import { userInfo } from "../datatype/User";
+import UserContext from "../store/user-context.ts";
 import { showToast } from "../utils/showtoast";
 import Profile_header from "../assets/profile_photo.png";
 
 function Sidebar() {
+  // Navigation
   const navigate = useNavigate();
-  const location = useLocation();
+
+  // Fetch friend list
   const { data: userFriends } = useFriendList();
+
+  // Get user info from user context
+  const { userInfo } = useContext(UserContext);
+
+  // User profile image
+  const {
+    data: profileImageUrl,
+    error,
+    isLoading,
+  } = useProfilePicture(userInfo.userId);
+
+  // Logout function
   const { deleteUserTokenCookie } = useUserTokenCookie();
+
+  // Show message/friendlist section
   const [isMessageVisible, setIsMessageVisible] = useState(false);
+
+  // Controll buttom line for active button state
   const [activeButton, setActiveButton] = useState("matching");
-  const [switchProfile, setSwitchProfile] = useState(""); // Switch between "/Home" and "/Profile"
 
   const isMatchPage = location.pathname === "/Match";
   const isChatroomPage = location.pathname.includes("/Chat");
@@ -45,33 +63,33 @@ function Sidebar() {
   }
 
   return (
-    <div className="flex flex-col border w-[350px] rounded-md p-2">
+    <div className="flex flex-col w-[350px]">
       {/* Profile/Editting Section */}
-      <div className="flex p-2 border w-full min-h-20 m-0.5">
+      <div className="flex p-2 border-b w-full min-h-20">
         <button
           className="flex w-3/5 p-2 justify-center items-center hover:-translate-y-0.5 hover:bg-slate-200 rounded-md"
           onClick={() => {
             navigate("/Profile");
           }}
         >
-          <div className="relative w-10 border left-1 rounded-full">
-            <img src={Profile_header} alt="Profile" />
+          <div className="relative w-10 left-2 flex items-center justify-center overflow-hidden rounded-full">
+            <img src={profileImageUrl} alt="Profile" />
           </div>
-          <div className="relative w-4/5">
-            <p className="text-xl">Nickname</p>
+          <div className="relative left-2 w-4/5">
+            <p className="text-xl">{userInfo.userProfile.nickname}</p>
           </div>
         </button>
       </div>
 
       {/* Button Section */}
-      <div className="flex p-2 border w-full h-16 gap-4 m-0.5">
+      <div className="flex border-b w-full h-16 gap-2">
         <button
           type="button"
           onClick={() => {
             slideToMatching();
             handleButtonBottomLines("matching");
           }}
-          className={`text-lg underline-button ${
+          className={`ml-4 text-lg underline-button ${
             activeButton === "matching" ? "active" : ""
           } hover:-translate-y-0.5 rounded-md`}
         >
@@ -83,7 +101,7 @@ function Sidebar() {
             slideToMessage();
             handleButtonBottomLines("message");
           }}
-          className={`text-lg underline-button ${
+          className={`ml-4 text-lg underline-button ${
             activeButton === "message" ? "active" : ""
           } hover:-translate-y-0.5 rounded-md`}
         >
@@ -92,7 +110,7 @@ function Sidebar() {
       </div>
 
       {/* Matching/Message Section */}
-      <div className="relative overflow-hidden border w-full h-full m-0.5">
+      <div className="relative overflow-hidden border-b w-full h-full">
         {/* Matching Section */}
         <div className="absolute flex flex-col w-full h-full justify-center items-center">
           <button
@@ -113,7 +131,7 @@ function Sidebar() {
         >
           {/* Content of the sliding div */}
           {isMessageVisible && (
-            <div className="w-full h-full bg-shiro shadow-md shadow-inner overflow-x-hidden overflow-y-scroll no-scrollbar m-0.5">
+            <div className="relative w-full h-full bg-shiro shadow-inner shadow-lg overflow-x-hidden overflow-y-scroll no-scrollbar">
               <div className="flex flex-col p-2 gap-0.5 border w-full">
                 {userFriends?.friendList.map((friend) => (
                   <div

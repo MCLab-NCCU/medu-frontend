@@ -58,8 +58,8 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -1px; /* Adjusts the distance below the button */
-    height: 3px; /* Height of the underline */
+    bottom: 8px; /* Adjusts the distance below the button */
+    height: 2px; /* Height of the underline */
     background-color: black; /* Color of the underline */
     transform: scaleX(0); /* Initially hidden */
     transition: transform 0.1s ease; /* Animation for smooth appearance */

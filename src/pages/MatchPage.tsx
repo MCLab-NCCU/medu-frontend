@@ -1,17 +1,25 @@
 import Sidebar from "./Sidebar";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import useMatchCard from "../hook/useMatchCard";
+import { userInfo } from "../datatype/User";
+import UserContext from "../store/user-context.ts";
 import Card from "./Card";
 import { IoHeart } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-import { userMatch } from "../datatype/User";
 
 function MatchPage() {
+  // Fetch match card
   const { fetchMatchCard, data: card } = useMatchCard();
+
+  // Get user info from user context
+  const { userInfo } = useContext(UserContext);
+
+  // Ref for match card slider
   const sliderRef = useRef<HTMLDivElement>(null);
   const [animation, setAnimation] = useState("");
+
+  // State for triggering fetch
   const [triggerFetch, setTriggerFetch] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     fetchMatchCard();
@@ -56,10 +64,10 @@ function MatchPage() {
   };
 
   return (
-    <div className="flex flex-grow min-h-0 p-2 gap-2 border-4 border-black m-2">
+    <div className="flex flex-grow min-h-0">
       <Sidebar />
-      <div className="flex flex-col justify-center items-center border grow p-2 overflow-hidden">
-        <div className={`w-[300px] border-2 transition ${animation}`}>
+      <div className="flex flex-col grow justify-center items-center border-l overflow-hidden">
+        <div className={`w-[300px] transition ${animation}`}>
           {card && (
             <Card
               ref={sliderRef}
@@ -68,7 +76,7 @@ function MatchPage() {
             />
           )}
         </div>
-        <div className="grid grid-cols-2 gap-16 mt-4">
+        <div className="grid grid-cols-2 gap-16 mt-8">
           <button
             onClick={handleDislike}
             className="rounded-full w-14 h-14 border-2 border-black justify-items-center"
