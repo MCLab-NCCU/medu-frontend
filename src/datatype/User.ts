@@ -44,6 +44,7 @@ export type message = {
 };
 
 export type userInfo = {
+  userId: string;
   accessToken: string;
   refreshToken: string;
   userProfile: userProfile;
@@ -53,10 +54,15 @@ export type userInfo = {
 export type userProfile = {
   birthDate: string;
   gender: string;
-  location: string;
+  location: userLocation;
   nickname: string;
   preference: object;
   profilePicturePath: string;
+};
+
+type userLocation = {
+  county: string;
+  township: string;
 };
 
 export type userMatch = {
@@ -71,4 +77,8 @@ type matchCard = {
   birthDate: string;
   gender: string;
   preference: object;
+};
+
+export type userProfilePicture = {
+  profilePicture: "jpg, png";
 };

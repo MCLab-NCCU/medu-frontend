@@ -1,5 +1,4 @@
 import { loginInfo, userInfo } from "../datatype/User";
-import { JWT } from "../datatype/JWT";
 
 // src/api/loginAPI.ts
 async function login(formData: loginInfo) {

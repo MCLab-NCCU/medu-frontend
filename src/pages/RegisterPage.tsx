@@ -11,7 +11,7 @@ function MainPage() {
         <div className="relative flex flex-1 flex-col justify-center items-center">
           <img
             src={Logo}
-            className="relative mb-8 w-1/3 h-auto pop-animation"
+            className="relative mb-8 w-1/3 h-auto pop-logo-animation"
           />
           <h2 className="text-font text-lg text-center font-bold">
             拯救找不到飯友的人於水火之中

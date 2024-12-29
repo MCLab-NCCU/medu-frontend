@@ -1,19 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import login from "../api/login";
 import { showToast } from "../utils/showtoast";
 import { useWebSocketStore } from "../store/useWebsocket";
 import useUserInfoCookie from "../hook/useUserInfoCookie";
 import JWTdecoder from "../utils/JWTdecoder";
+import UserContext from "../store/user-context.ts";
+
 
 function Login() {
+  // Login form data
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+
+  // Connect to websocket
   const connect = useWebSocketStore((state) => state.connect);
 
+
   const { setCookies } = useUserInfoCookie();
+  // Set user info to global user context after login
+  const { setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +41,9 @@ function Login() {
       setCookies(userInfo);
       console.log(userInfo.refreshToken);
       connect(import.meta.env.VITE_WEBSOCKET_URL + userInfo.accessToken);
+      setUserInfo(userInfo);
       showToast("success", "登入成功");
+      // Navigate to match page
       navigate("/Match");
     } catch (error) {
       showToast("error", "帳密有誤");

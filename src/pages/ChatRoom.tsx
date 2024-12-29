@@ -27,6 +27,7 @@ function ChatRoom() {
     status: historyMessagesStatus,
     refetch,
   } = useMessageHistory(target!);
+
   const { data: nickname, status: nicknameStatus } = useNickname(target!);
   const [sendContent, setSendContent] = useState<content[]>([]);
   const chatroomRef = useRef<HTMLDivElement>(null);
@@ -129,20 +130,19 @@ function ChatRoom() {
   }
 
   return (
-    <div className="flex flex-col border-2 justify-end max-w-screen min-h-screen">
-      <div className="relative bottom-4 flex w-full h-[90vh]">
-        <div className="flex p-2 gap-2 border-4 border-black grow min-h-full m-2">
-          <Sidebar />
-          <div className="flex flex-col border grow rounded-md p-2">
-            {/* Message Target Info Section */}
-            <div className="flex p-2 border w-full min-h-20 m-0.5">
-              <div className="rounded-full w-[8%] m-auto">
-                <img src={Profile_header} alt="Profile" />
-              </div>
-              <div className="w-[85%] text-5xl px-10 my-auto">
-                {nickname?.nickname}
-              </div>
-            </div>
+    <div className="flex flex-grow min-h-0 p-2 gap-2 border-4 border-black m-2">
+      <Sidebar />
+      <div className="flex flex-col border grow rounded-md p-2">
+        {/* Message Target Info Section */}
+        <div className="flex p-2 border w-full min-h-20 m-0.5">
+          <div className="rounded-full w-[8%] m-auto">
+            <img src={Profile_header} alt="Profile" />
+          </div>
+          <div className="w-[85%] text-5xl px-10 my-auto">
+            {nickname?.nickname}
+          </div>
+        </div>
+
 
             {/* Chatbox Section */}
             <div
@@ -193,22 +193,22 @@ function ChatRoom() {
                   </div>
                 ))}
               </div>
-            </div>
-
-            {/* Message Input Section */}
-            <div className="flex p-2 border w-full min-h-12 m-0.5">
-              <input
-                type="text"
-                placeholder="輸入訊息..."
-                className="bg-[#fefefe] rounded-full h-16 w-[90%] text-3xl px-3 block"
-                ref={contentRef}
-              />
-              <HiOutlinePaperAirplane
-                className="text-6xl w-[10%] text-left cursor-pointer"
-                onClick={sendMessage}
-              />
-            </div>
+            ))}
           </div>
+        </div>
+
+        {/* Message Input Section */}
+        <div className="flex p-2 border w-full min-h-12 m-0.5">
+          <input
+            type="text"
+            placeholder="輸入訊息..."
+            className="bg-[#fefefe] rounded-full h-16 w-[90%] text-3xl px-3 block"
+            ref={contentRef}
+          />
+          <HiOutlinePaperAirplane
+            className="text-6xl w-[10%] text-left cursor-pointer"
+            onClick={sendMessage}
+          />
         </div>
       </div>
     </div>
