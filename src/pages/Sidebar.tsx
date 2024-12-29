@@ -7,46 +7,58 @@ import { userInfo } from "../datatype/User";
 import UserContext from "../store/user-context.ts";
 import { showToast } from "../utils/showtoast";
 import Profile_header from "../assets/profile_photo.png";
+import useUserInfoCookie from "../hook/useUserInfoCookie";
+import getFriendList from "../api/getFriendList";
+import { error } from "console";
+import JWTdecoder from "../utils/JWTdecoder";
+import refresh from "../api/refresh";
 
 function Sidebar() {
   // Navigation
   const navigate = useNavigate();
-
-  // Fetch friend list
-  const { data: userFriends } = useFriendList();
-
+  const location = useLocation();
+  const { refreshAccessCookie, deleteCookies, accessToken, refreshToken, ID } =
+    useUserInfoCookie();
+  const { data: userFriends, status, error } = useFriendList();
   // Get user info from user context
   const { userInfo } = useContext(UserContext);
-
   // User profile image
   const {
     data: profileImageUrl,
     error,
     isLoading,
   } = useProfilePicture(userInfo.userId);
-
-  // Logout function
-  const { deleteUserTokenCookie } = useUserTokenCookie();
-
   // Show message/friendlist section
   const [isMessageVisible, setIsMessageVisible] = useState(false);
-
   // Controll buttom line for active button state
   const [activeButton, setActiveButton] = useState("matching");
-
   const isMatchPage = location.pathname === "/Match";
   const isChatroomPage = location.pathname.includes("/Chat");
 
   useEffect(() => {
     if (isChatroomPage) {
-      setIsMessageVisible(true);
+       setIsMessageVisible(true);
       setActiveButton("message");
     }
   }, [isChatroomPage]);
 
+  useEffect(() => {
+    if (status === "error") {
+      checkValid();
+    }
+  }, [status]);
+
+  async function checkValid() {
+    if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
+      const newToken = await refresh(ID, refreshToken);
+      refreshAccessCookie(newToken);
+    }
+  }
+
   const handleButtonBottomLines = (buttonName: string) => {
     setActiveButton(buttonName);
   };
+
 
   const slideToMessage = () => {
     setIsMessageVisible(true);
@@ -57,7 +69,7 @@ function Sidebar() {
   };
 
   function logout() {
-    deleteUserTokenCookie();
+    deleteCookies();
     navigate("/");
     showToast("success", "登出");
   }

@@ -1,24 +1,24 @@
 import { useState } from "react";
-import useUserTokenCookie from "./useUserTokenCookie";
 import getMatchCard from "../api/getMatchCard";
 import { userMatch } from "../datatype/User";
+import useUserInfoCookie from "./useUserInfoCookie";
 
 function useMatchCard() {
-  const { tokenCookie } = useUserTokenCookie();
+  const { accessToken } = useUserInfoCookie();
   const [data, setData] = useState<userMatch | null>(null); // State to hold the fetched data
   const [loading, setLoading] = useState(true); // State for loading status
   const [error, setError] = useState(null); // State for error handling
 
   const fetchMatchCard = async () => {
-    if (!tokenCookie) {
-        console.error("No token available");
-        return;
-      }
+    if (!accessToken) {
+      console.error("No token available");
+      return;
+    }
 
     setLoading(true); // Set loading to true before fetching
     setError(null); // Set error to null before fetching
     try {
-      const res = await getMatchCard(tokenCookie!);
+      const res = await getMatchCard(accessToken!);
       console.log(res);
       setData(res); // Store the fetched data in state
     } catch (error) {

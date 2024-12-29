@@ -1,4 +1,6 @@
 import { userFriends } from "../datatype/User";
+import useUserInfoCookie from "../hook/useUserInfoCookie";
+import refresh from "./refresh";
 
 async function getFriendList(token: string) {
   const res = await fetch(

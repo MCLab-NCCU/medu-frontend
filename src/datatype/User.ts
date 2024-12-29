@@ -33,7 +33,7 @@ export type messageHistory = {
   messageHistory: [message];
 };
 
-type message = {
+export type message = {
   createdAt: string;
   fromUserId: string;
   message: string;
@@ -48,9 +48,10 @@ export type userInfo = {
   accessToken: string;
   refreshToken: string;
   userProfile: userProfile;
+  userId: string;
 };
 
-type userProfile = {
+export type userProfile = {
   birthDate: string;
   gender: string;
   location: userLocation;

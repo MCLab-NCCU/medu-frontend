@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import login from "../api/login";
-import useUserTokenCookie from "../hook/useUserTokenCookie";
 import { showToast } from "../utils/showtoast";
 import { useWebSocketStore } from "../store/useWebsocket";
+import useUserInfoCookie from "../hook/useUserInfoCookie";
+import JWTdecoder from "../utils/JWTdecoder";
 import UserContext from "../store/user-context.ts";
+
 
 function Login() {
   // Login form data
@@ -16,13 +18,10 @@ function Login() {
   // Connect to websocket
   const connect = useWebSocketStore((state) => state.connect);
 
+
+  const { setCookies } = useUserInfoCookie();
   // Set user info to global user context after login
   const { setUserInfo } = useContext(UserContext);
-
-  // Set user token cookie after login
-  const { setUserTokenCookie } = useUserTokenCookie();
-
-  // Navigation
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,18 +38,11 @@ function Login() {
 
     try {
       const userInfo = await login(formData);
-
-      // Set user token cookie and global user context
-      setUserTokenCookie(userInfo.accessToken);
-      setUserInfo(userInfo);
-
-      // Connect to websocket
+      setCookies(userInfo);
+      console.log(userInfo.refreshToken);
       connect(import.meta.env.VITE_WEBSOCKET_URL + userInfo.accessToken);
-
-      // Success Messages
-      console.log(userInfo.accessToken);
+      setUserInfo(userInfo);
       showToast("success", "登入成功");
-
       // Navigate to match page
       navigate("/Match");
     } catch (error) {

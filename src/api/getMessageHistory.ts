@@ -1,6 +1,6 @@
 import { messageHistory } from "../datatype/User";
 
-async function getMessageHistory(token: string, id: string) {
+async function getMessageHistory(id: string, token: string) {
   const res = await fetch(
     import.meta.env.VITE_SERVER_URL + "message/messagehistory/" + id,
     {

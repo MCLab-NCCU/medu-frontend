@@ -6,6 +6,11 @@ import UserContext from "../store/user-context.ts";
 import Card from "./Card";
 import { IoHeart } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
+import { userMatch } from "../datatype/User";
+import JWTdecoder from "../utils/JWTdecoder";
+import refresh from "../api/refresh";
+import useUserInfoCookie from "../hook/useUserInfoCookie";
+
 
 function MatchPage() {
   // Fetch match card
@@ -20,6 +25,8 @@ function MatchPage() {
 
   // State for triggering fetch
   const [triggerFetch, setTriggerFetch] = useState(false);
+  const { refreshAccessCookie, accessToken, refreshToken } =
+    useUserInfoCookie();
 
   useEffect(() => {
     fetchMatchCard();
@@ -39,11 +46,21 @@ function MatchPage() {
     }
   }, [card]); // This effect runs only when card is updated
 
+  useEffect(() => {
+    checkValid();
+  }, []);
+
+  async function checkValid() {
+    if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
+      const newToken = await refresh(accessToken, refreshToken);
+      refreshAccessCookie(newToken);
+    }
+  }
+
   const handleLike = () => {
     setAnimation("animate-card-slide-right");
     setTimeout(() => {
       setTriggerFetch(!triggerFetch);
-
       setAnimation("animate-card-blob-up");
       setTimeout(() => {
         setAnimation("");
@@ -55,7 +72,6 @@ function MatchPage() {
     setAnimation("animate-card-slide-left");
     setTimeout(() => {
       setTriggerFetch(!triggerFetch);
-
       setAnimation("animate-card-blob-up");
       setTimeout(() => {
         setAnimation("");

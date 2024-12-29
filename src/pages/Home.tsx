@@ -4,10 +4,12 @@ import MatchPage from "./MatchPage";
 import useFriendList from "../hook/useFriendList";
 import { useNavigate } from "react-router-dom";
 import Profile_header from "../assets/profile_photo.png";
+import FriendList from "./FriendList";
 
 function Home() {
-  const { data } = useFriendList();
   const navigate = useNavigate();
+
+  //ws.onmessage()
 
   return (
     <div className="flex flex-col border-2 justify-end max-w-screen min-h-screen">
@@ -16,6 +18,15 @@ function Home() {
           <Sidebar />
           <MatchPage />
         </div>
+
+        <div className="border-black border-2"></div>
+        <div className="mt-5 h-[80%] ">
+          <FriendList />
+        </div>
+      </div>
+
+      <div className="w-3/4 bg-[#fefefe] rounded-lg border-black border-2 relative h-fit">
+        <ChatRoom />
       </div>
     </div>
   );
