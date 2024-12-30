@@ -12,7 +12,7 @@ function Header() {
 function RootLayout() {
   return (
     <main>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-[97vh] .no-scrollbar .no-scrollbar::-webkit-scrollbar">
         <Header />
         <Outlet />
       </div>

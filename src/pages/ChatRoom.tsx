@@ -131,11 +131,11 @@ function ChatRoom() {
   }
 
   return (
-    <div className="flex flex-grow min-h-0 p-2 gap-2 border-4 border-black m-2">
+    <div className="flex h-[90vh] ">
       <Sidebar />
-      <div className="flex flex-col border grow rounded-md p-2 relative">
+      <div className="flex flex-col  grow rounded-md relative ">
         {/* Message Target Info Section */}
-        <div className="flex p-2 border w-full min-h-20 m-0.5">
+        <div className="flex p-2 border w-full min-h-24 m-0.5">
           <div className="rounded-full w-[8%] m-auto">
             <img
               src={picture}
@@ -195,7 +195,7 @@ function ChatRoom() {
           </div>
         </div>
         {/* Message Input Section */}
-        <div className="flex p-2 w-full min-h-12 m-0.5 absolute bottom-0">
+        <div className="flex p-2 w-full min-h-12 m-0.5 absolute bottom-0 bg-white">
           <input
             type="text"
             placeholder="輸入訊息..."

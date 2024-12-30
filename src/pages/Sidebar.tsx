@@ -88,9 +88,9 @@ function Sidebar() {
   }
 
   return (
-    <div className="flex flex-col w-[350px]">
+    <div className="flex flex-col w-[350px] ">
       {/* Profile/Editting Section */}
-      <div className="flex p-2 border-b w-full min-h-20">
+      <div className="flex p-2 border-b w-full min-h-20 h-[12%]">
         <button
           className="flex w-3/5 p-2 justify-center items-center hover:-translate-y-0.5 hover:bg-slate-200 rounded-md"
           onClick={() => {
@@ -112,8 +112,7 @@ function Sidebar() {
         <button
           type="button"
           onClick={() => {
-            slideToMatching();
-            handleButtonBottomLines("matching");
+            navigate("/Match");
           }}
           className={`ml-4 text-lg underline-button ${
             activeButton === "matching" ? "active" : ""
@@ -138,15 +137,10 @@ function Sidebar() {
       {/* Matching/Message Section */}
       <div className="relative overflow-hidden border-b w-full h-full">
         {/* Matching Section */}
-        <div className="absolute flex flex-col w-full h-full justify-center items-center">
-          <button
-            className="text-font text-2xl p-4 rounded-lg mb-2 hover:-translate-y-1 hover:bg-slate-200"
-            onClick={() => {
-              navigate("/Match");
-            }}
-          >
+        <div className="absolute flex flex-col w-full h-full justify-center items-center cursor-default">
+          <div className="text-font text-2xl p-4 rounded-lg mb-2">
             matching!
-          </button>
+          </div>
           <p>點擊配對開始尋找你今天的好飯友！</p>
         </div>
 

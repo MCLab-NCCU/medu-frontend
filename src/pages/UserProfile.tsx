@@ -13,14 +13,10 @@ function UserProfile() {
       <div className="flex flex-col w-1/4">
         <div className="flex items-center w-full min-h-20">
           <button
-            className="relative left-8 hover:-translate-y-0.5 hover:bg-slate-200"
+            className="relative left-8 hover:-translate-y-0.5 hover:bg-slate-200  pop-logo-animation"
             onClick={() => navigate("/Match")}
           >
-            <img
-              src={Logo}
-              alt="返回"
-              className="w-auto h-12 pop-logo-animation"
-            />
+            返回主頁
           </button>
         </div>
         <p className="relative left-2 p-2 mt-4 mb-2 text-font text-lg font-bold">

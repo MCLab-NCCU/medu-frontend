@@ -44,8 +44,8 @@ function MatchPage() {
       console.log(card.matchCard.profile.nickname);
       console.log(card.matchCard.profile.gender);
     }
-  }, [card]); // This effect runs only when card is updated
-*/
+  }, [card]);*/ // This effect runs only when card is updated
+
   useEffect(() => {
     checkValid();
     fetchMatchCard();
@@ -86,31 +86,37 @@ function MatchPage() {
     <div className="flex flex-grow min-h-0">
       <Sidebar />
       <div className="flex flex-col grow justify-center items-center border-l overflow-hidden">
-        <div className={`w-[300px] transition ${animation}`}>
-          {card && (
-            <Card
-              ref={sliderRef}
-              nickname={card.matchCard.profile.nickname}
-              gender={card.matchCard.profile.gender}
-              bio={card.matchCard.profile.bio}
-              userid={card.matchCard.userId}
-            />
-          )}
-        </div>
-        <div className="grid grid-cols-2 gap-16 mt-8">
-          <button
-            onClick={handleDislike}
-            className="rounded-full w-14 h-14 border-2 border-black justify-items-center"
-          >
-            <RxCross2 style={{ fontSize: "2rem" }} />
-          </button>
-          <button
-            onClick={handleLike}
-            className="rounded-full w-14 h-14 border-2 border-black justify-items-center justify-self-end"
-          >
-            <IoHeart style={{ fontSize: "2rem" }} />
-          </button>
-        </div>
+        {card === null ? (
+          <>
+            <div className={`w-[300px] transition ${animation}`}>
+              {card && (
+                <Card
+                  ref={sliderRef}
+                  nickname={card.matchCard.profile.nickname}
+                  gender={card.matchCard.profile.gender}
+                  bio={card.matchCard.profile.bio}
+                  userid={card.matchCard.userId}
+                />
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-16 mt-8">
+              <button
+                onClick={handleDislike}
+                className="rounded-full w-14 h-14 border-2 border-black justify-items-center"
+              >
+                <RxCross2 style={{ fontSize: "2rem" }} />
+              </button>
+              <button
+                onClick={handleLike}
+                className="rounded-full w-14 h-14 border-2 border-black justify-items-center justify-self-end"
+              >
+                <IoHeart style={{ fontSize: "2rem" }} />
+              </button>
+            </div>
+          </>
+        ) : (
+          "目前沒有匹配對象QQ"
+        )}
       </div>
     </div>
   );

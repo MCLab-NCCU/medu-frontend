@@ -90,7 +90,8 @@ function Login() {
         >
           登入
         </button>
-        <button onClick={() => navigate("/Register")}>註冊嗎？註冊！</button>
+        <span className="cursor-default">註冊嗎? </span>
+        <button onClick={() => navigate("/Register")}>註冊！</button>
       </form>
     </div>
   );

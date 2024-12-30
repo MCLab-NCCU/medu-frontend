@@ -14,16 +14,17 @@ const Card = forwardRef<HTMLDivElement, CardInfoProps>(
   ({ nickname, gender, userid, bio }, ref) => {
     const [cardNickname, setNickname] = useState("");
     const [cardGender, setGender] = useState("");
-    const [cardBio, setBio] = useState("");
-    const [cardID, setID] = useState("");
     const [picture, setPicture] = useState("");
 
     useEffect(() => {
       if (nickname && gender) {
         setNickname(nickname);
-        setGender(gender);
-        setBio(bio);
-        setID(userid);
+        if (gender === "male") {
+          setGender("男");
+        } else {
+          setGender("女");
+        }
+
         getpicture();
       }
     }, [nickname, gender, bio, userid]);
@@ -42,7 +43,6 @@ const Card = forwardRef<HTMLDivElement, CardInfoProps>(
             <h2 className="card-title text-xl font-bold">{cardNickname}</h2>
             <p>{cardGender}</p>
           </div>
-          <IoRemoveOutline className="relative left-4" />
           <div className="card-body p-4">
             <p>{bio}</p>
           </div>
