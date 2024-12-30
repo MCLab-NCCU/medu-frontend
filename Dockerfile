@@ -20,6 +20,14 @@ RUN npm run build
 # production stage
 FROM nginx:alpine
 
+WORKDIR /etc/nginx
+
+COPY ssl ./
+
+WORKDIR /etc/nginx/sites-enabled
+
+COPY default ./
+
 # 建立工作目錄
 WORKDIR /usr/share/nginx/html
 

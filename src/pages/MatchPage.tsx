@@ -82,11 +82,13 @@ function MatchPage() {
     }, 500);
   };
 
+  console.log(card);
+
   return (
     <div className="flex flex-grow min-h-0">
       <Sidebar />
       <div className="flex flex-col grow justify-center items-center border-l overflow-hidden">
-        {card === null ? (
+        {card ? (
           <>
             <div className={`w-[300px] transition ${animation}`}>
               {card && (
@@ -115,7 +117,7 @@ function MatchPage() {
             </div>
           </>
         ) : (
-          "目前沒有匹配對象QQ"
+          "目前沒有匹配對象"
         )}
       </div>
     </div>

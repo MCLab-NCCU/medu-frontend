@@ -5,7 +5,6 @@ import useNickname from "../hook/useNickname";
 import { useEffect, useRef, useState } from "react";
 import { useWebSocketStore } from "../store/useWebsocket";
 import Sidebar from "./Sidebar";
-import Profile_header from "../assets/profile_photo.png";
 import refresh from "../api/refresh";
 import JWTdecoder from "../utils/JWTdecoder";
 import useUserInfoCookie from "../hook/useUserInfoCookie";
@@ -150,7 +149,7 @@ function ChatRoom() {
 
         {/* Chatbox Section */}
         <div
-          className="w-full flex-grow overflow-y-scroll no-scrollbar m-0.5"
+          className="w-full h-4/5 overflow-y-scroll no-scrollbar m-0.5"
           ref={chatroomRef}
         >
           <div className="flex space-y-2 flex-col-reverse">

@@ -59,7 +59,6 @@ function Sidebar() {
       setFriendList(defaultFriends);
     }
   }, [status]);
-  console.log(friendList);
 
   async function checkValid() {
     if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
