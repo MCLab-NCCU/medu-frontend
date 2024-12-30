@@ -19,18 +19,16 @@ const queryClient = new QueryClient({
 });
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <CookiesProvider>
-        <UserProvider>
-          <App />
-          <ToastContainer
-            position="top-right"
-            autoClose={1750}
-            pauseOnFocusLoss={false}
-          />
-        </UserProvider>
-      </CookiesProvider>
-    </QueryClientProvider>
-  </StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <CookiesProvider>
+      <UserProvider>
+        <App />
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          pauseOnFocusLoss={false}
+        />
+      </UserProvider>
+    </CookiesProvider>
+  </QueryClientProvider>
 );

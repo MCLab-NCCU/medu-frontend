@@ -1,17 +1,17 @@
-import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import useFriendList from "../hook/useFriendList";
 import useProfilePicture from "../hook/useProfilePicture";
-import useUserTokenCookie from "../hook/useUserTokenCookie";
-import { userInfo } from "../datatype/User";
 import UserContext from "../store/user-context.ts";
 import { showToast } from "../utils/showtoast";
 import Profile_header from "../assets/profile_photo.png";
 import useUserInfoCookie from "../hook/useUserInfoCookie";
-import getFriendList from "../api/getFriendList";
-import { error } from "console";
 import JWTdecoder from "../utils/JWTdecoder";
 import refresh from "../api/refresh";
+import logout from "../api/logout.ts";
+import { IoIosLogOut } from "react-icons/io";
+import { friendDetail } from "../datatype/User.ts";
+import getProfilePicture from "../api/getProfilePicture.ts";
 
 function Sidebar() {
   // Navigation
@@ -19,15 +19,13 @@ function Sidebar() {
   const location = useLocation();
   const { refreshAccessCookie, deleteCookies, accessToken, refreshToken, ID } =
     useUserInfoCookie();
-  const { data: userFriends, status, error } = useFriendList();
+  const { data: userFriends, status } = useFriendList();
   // Get user info from user context
   const { userInfo } = useContext(UserContext);
   // User profile image
-  const {
-    data: profileImageUrl,
-    error,
-    isLoading,
-  } = useProfilePicture(userInfo.userId);
+  const { data: profileImageUrl, error, isLoading } = useProfilePicture(ID);
+  const defaultFriends = new Array<friendDetail>();
+  const [friendList, setFriendList] = useState(defaultFriends);
   // Show message/friendlist section
   const [isMessageVisible, setIsMessageVisible] = useState(false);
   // Controll buttom line for active button state
@@ -37,7 +35,7 @@ function Sidebar() {
 
   useEffect(() => {
     if (isChatroomPage) {
-       setIsMessageVisible(true);
+      setIsMessageVisible(true);
       setActiveButton("message");
     }
   }, [isChatroomPage]);
@@ -47,6 +45,21 @@ function Sidebar() {
       checkValid();
     }
   }, [status]);
+
+  useEffect(() => {
+    if (status === "success") {
+      userFriends.friendList.map(async (friend) => {
+        defaultFriends.push({
+          friendId: friend.friendId,
+          friendNickname: friend.friendNickname,
+          friendLatestMessage: friend.friendLatestMessage,
+          picture: await getProfilePicture(friend.friendId),
+        });
+      });
+      setFriendList(defaultFriends);
+    }
+  }, [status]);
+  console.log(friendList);
 
   async function checkValid() {
     if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
@@ -59,7 +72,6 @@ function Sidebar() {
     setActiveButton(buttonName);
   };
 
-
   const slideToMessage = () => {
     setIsMessageVisible(true);
   };
@@ -68,7 +80,8 @@ function Sidebar() {
     setIsMessageVisible(false);
   };
 
-  function logout() {
+  function Logout() {
+    logout(refreshToken);
     deleteCookies();
     navigate("/");
     showToast("success", "登出");
@@ -81,16 +94,17 @@ function Sidebar() {
         <button
           className="flex w-3/5 p-2 justify-center items-center hover:-translate-y-0.5 hover:bg-slate-200 rounded-md"
           onClick={() => {
-            navigate("/Profile");
+            navigate("/Setting");
           }}
         >
           <div className="relative w-10 left-2 flex items-center justify-center overflow-hidden rounded-full">
             <img src={profileImageUrl} alt="Profile" />
           </div>
           <div className="relative left-2 w-4/5">
-            <p className="text-xl">{userInfo.userProfile.nickname}</p>
+            <p className="text-xl">{userInfo.nickname}</p>
           </div>
         </button>
+        <IoIosLogOut className="text-4xl m-auto" onClick={Logout} />
       </div>
 
       {/* Button Section */}
@@ -145,7 +159,7 @@ function Sidebar() {
           {isMessageVisible && (
             <div className="relative w-full h-full bg-shiro shadow-inner shadow-lg overflow-x-hidden overflow-y-scroll no-scrollbar">
               <div className="flex flex-col p-2 gap-0.5 border w-full">
-                {userFriends?.friendList.map((friend) => (
+                {friendList.map((friend) => (
                   <div
                     key={friend.friendId}
                     className="flex w-full h-[60px] rounded-3xl items-center cursor-pointer hover:translate-x-0.5 hover:bg-slate-200"
@@ -159,7 +173,7 @@ function Sidebar() {
                     }}
                   >
                     <div className="w-10 border-2 rounded-full m-auto">
-                      <img src={Profile_header} alt="Profile" />
+                      <img src={friend.picture} alt="Profile" />
                     </div>
                     <div className="relative w-4/5">
                       <p className="text-2xl">{friend.friendNickname}</p>

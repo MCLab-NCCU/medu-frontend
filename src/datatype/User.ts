@@ -1,3 +1,5 @@
+import { File } from "buffer";
+
 export type registerInfo = {
   username: string;
   password: string;
@@ -27,6 +29,7 @@ export type friendDetail = {
   friendId: string;
   friendNickname: string;
   friendLatestMessage: message;
+  picture: string;
 };
 
 export type messageHistory = {
@@ -48,7 +51,6 @@ export type userInfo = {
   accessToken: string;
   refreshToken: string;
   userProfile: userProfile;
-  userId: string;
 };
 
 export type userProfile = {
@@ -58,6 +60,13 @@ export type userProfile = {
   nickname: string;
   preference: object;
   profilePicturePath: string;
+  bio: string;
+};
+
+export type updateProfileData = {
+  location: userLocation;
+  nickname: string;
+  bio: string;
 };
 
 type userLocation = {
@@ -77,8 +86,9 @@ type matchCard = {
   birthDate: string;
   gender: string;
   preference: object;
+  bio: string;
 };
 
 export type userProfilePicture = {
-  profilePicture: "jpg, png";
+  profilePicture: File;
 };

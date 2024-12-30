@@ -1,9 +1,9 @@
 import React from "react";
-import { userInfo } from "../datatype/User";
+import { userProfile } from "../datatype/User";
 
 const UserContext = React.createContext({
-  userInfo: {} as userInfo,
-  setUserInfo: (userInfo: userInfo) => {},
+  userInfo: {} as userProfile,
+  setUserInfo: (userInfo: userProfile) => {},
 });
 
 export default UserContext;

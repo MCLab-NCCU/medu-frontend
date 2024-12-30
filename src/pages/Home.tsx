@@ -1,16 +1,9 @@
 import ChatRoom from "./ChatRoom";
 import Sidebar from "./Sidebar";
 import MatchPage from "./MatchPage";
-import useFriendList from "../hook/useFriendList";
-import { useNavigate } from "react-router-dom";
-import Profile_header from "../assets/profile_photo.png";
 import FriendList from "./FriendList";
 
 function Home() {
-  const navigate = useNavigate();
-
-  //ws.onmessage()
-
   return (
     <div className="flex flex-col border-2 justify-end max-w-screen min-h-screen">
       <div className="relative bottom-4 flex w-full h-[90vh]">

@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.62.2",
     "@types/node": "^22.10.1",
+    "base64-encode-file": "^1.0.7",
     "flatpickr": "^4.6.13",
     "http-proxy-middleware": "^3.0.3",
     "jwt-decode": "^4.0.0",
@@ -33,7 +34,7 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
-    "daisyui": "^4.12.14",
+    "daisyui": "^4.12.23",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.2",

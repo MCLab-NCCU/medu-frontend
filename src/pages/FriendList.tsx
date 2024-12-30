@@ -4,18 +4,17 @@ import Profile_header from "../assets/profile_photo.png";
 import useFriendList from "../hook/useFriendList";
 import { useEffect, useState } from "react";
 import { useWebSocketStore } from "../store/useWebsocket";
-import useUserInfoCookie from "../hook/useUserInfoCookie";
+import getProfilePicture from "../api/getProfilePicture";
 
 function FriendList() {
   const navigate = useNavigate();
-  const { accessToken } = useUserInfoCookie();
   const { data, status } = useFriendList();
   const defaultFriends = new Array<friendDetail>();
   const [friendList, setFriendList] = useState(defaultFriends);
-  const ws = useWebSocketStore().socket;
-  const [userID, setUserID] = useState("");
+  //const ws = useWebSocketStore().socket;
+  //const [userID, setUserID] = useState("");
 
-  function renewFriends(event: MessageEvent) {
+  /*function renewFriends(event: MessageEvent) {
     try {
       const data: message = JSON.parse(event.data);
       console.log("收到服務器消息:", data);
@@ -50,21 +49,21 @@ function FriendList() {
     } catch (err) {
       console.error("無法解析服務器消息:", event.data, err);
     }
-  }
+  }*/
 
-  ws!.addEventListener("message", renewFriends);
+  //ws!.addEventListener("message", renewFriends);
 
   useEffect(() => {
     if (status === "success") {
-      data.friendList.map((friend) => {
+      data.friendList.map(async (friend) => {
         defaultFriends.push({
           friendId: friend.friendId,
           friendNickname: friend.friendNickname,
           friendLatestMessage: friend.friendLatestMessage,
+          picture: await getProfilePicture(friend.friendId),
         });
       });
       setFriendList(defaultFriends);
-      setUserID(data.friendList[0].friendLatestMessage.fromUserId);
     }
   }, [status]);
 
@@ -83,7 +82,7 @@ function FriendList() {
           }}
         >
           <div className="w-20 border-2 rounded-full m-auto">
-            <img src={Profile_header} alt="Profile" />
+            <img src={friend.picture} alt="Profile" />
           </div>
           <div className="w-3/4 grid-rows-2 text-3xl p-2">
             <div className="text-3xl">{friend.friendNickname}</div>

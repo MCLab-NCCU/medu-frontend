@@ -4,9 +4,7 @@ import login from "../api/login";
 import { showToast } from "../utils/showtoast";
 import { useWebSocketStore } from "../store/useWebsocket";
 import useUserInfoCookie from "../hook/useUserInfoCookie";
-import JWTdecoder from "../utils/JWTdecoder";
 import UserContext from "../store/user-context.ts";
-
 
 function Login() {
   // Login form data
@@ -17,7 +15,6 @@ function Login() {
 
   // Connect to websocket
   const connect = useWebSocketStore((state) => state.connect);
-
 
   const { setCookies } = useUserInfoCookie();
   // Set user info to global user context after login
@@ -39,9 +36,8 @@ function Login() {
     try {
       const userInfo = await login(formData);
       setCookies(userInfo);
-      console.log(userInfo.refreshToken);
       connect(import.meta.env.VITE_WEBSOCKET_URL + userInfo.accessToken);
-      setUserInfo(userInfo);
+      setUserInfo(userInfo.userProfile);
       showToast("success", "登入成功");
       // Navigate to match page
       navigate("/Match");

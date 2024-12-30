@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import UserContext from "./user-context.ts";
-import { userInfo } from "../datatype/User";
+import { userInfo, userProfile } from "../datatype/User";
 
 const UserProvider = ({ children }) => {
-  const [userInfo, setUserInfo] = useState({} as userInfo);
+  const [userInfo, setUserInfo] = useState({} as userProfile);
 
   return (
     <UserContext.Provider value={{ userInfo, setUserInfo }}>

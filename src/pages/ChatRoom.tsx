@@ -3,15 +3,13 @@ import { useSearchParams } from "react-router-dom";
 import useMessageHistory from "../hook/useMessageHistory";
 import useNickname from "../hook/useNickname";
 import { useEffect, useRef, useState } from "react";
-import React from "react";
 import { useWebSocketStore } from "../store/useWebsocket";
-
 import Sidebar from "./Sidebar";
-
 import Profile_header from "../assets/profile_photo.png";
 import refresh from "../api/refresh";
 import JWTdecoder from "../utils/JWTdecoder";
 import useUserInfoCookie from "../hook/useUserInfoCookie";
+import useProfilePicture from "../hook/useProfilePicture";
 
 type content = {
   id: string;
@@ -27,6 +25,7 @@ function ChatRoom() {
     status: historyMessagesStatus,
     refetch,
   } = useMessageHistory(target!);
+  const { data: picture } = useProfilePicture(target!);
 
   const { data: nickname, status: nicknameStatus } = useNickname(target!);
   const [sendContent, setSendContent] = useState<content[]>([]);
@@ -69,7 +68,6 @@ function ChatRoom() {
   useEffect(() => {
     refetch();
     checkValid();
-
     return () => {
       setSendContent([]);
     };
@@ -87,8 +85,6 @@ function ChatRoom() {
     }
   }, [historyMessagesStatus]);
 
-  console.log(historyMessages);
-
   async function checkValid() {
     if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
       const newToken = await refresh(ID, refreshToken);
@@ -96,9 +92,14 @@ function ChatRoom() {
       refetch();
       ws.close();
       connect(import.meta.env.VITE_WEBSOCKET_URL + newToken.accessToken);
-      console.log(2);
     }
   }
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+  };
 
   const sendMessage = () => {
     if (contentRef.current?.value.trim()) {
@@ -132,157 +133,81 @@ function ChatRoom() {
   return (
     <div className="flex flex-grow min-h-0 p-2 gap-2 border-4 border-black m-2">
       <Sidebar />
-      <div className="flex flex-col border grow rounded-md p-2">
+      <div className="flex flex-col border grow rounded-md p-2 relative">
         {/* Message Target Info Section */}
         <div className="flex p-2 border w-full min-h-20 m-0.5">
           <div className="rounded-full w-[8%] m-auto">
-            <img src={Profile_header} alt="Profile" />
+            <img
+              src={picture}
+              alt="Profile"
+              className="w-20 h-20 flex items-center justify-center overflow-hidden rounded-full"
+            />
           </div>
           <div className="w-[85%] text-5xl px-10 my-auto">
             {nickname?.nickname}
           </div>
         </div>
 
-
-            {/* Chatbox Section */}
-            <div
-              className="w-full flex-grow overflow-y-scroll border no-scrollbar m-0.5"
-              ref={chatroomRef}
-            >
-              <div className="flex space-y-2 flex-col-reverse">
-                {historyMessages?.messageHistory.map((message) => (
-                  <div
-                    key={message._id}
-                    className={`flex ${
-                      message.fromUserId === target
-                        ? "justify-start"
-                        : "justify-end"
-                    } m-2`}
-                  >
-                    <div
-                      className={`${
-                        message.fromUserId === target
-                          ? "bg-[#bf8e68]"
-                          : "bg-[#ffdeaa]"
-                      } text-4xl text-black p-4 rounded-full max-w-5xl`}
-                    >
-                      {message.message}
-                    </div>
-                  </div>
-                ))}
+        {/* Chatbox Section */}
+        <div
+          className="w-full flex-grow overflow-y-scroll no-scrollbar m-0.5"
+          ref={chatroomRef}
+        >
+          <div className="flex space-y-2 flex-col-reverse">
+            {historyMessages?.messageHistory.map((message) => (
+              <div
+                key={message._id}
+                className={`flex ${
+                  message.fromUserId === target
+                    ? "justify-start"
+                    : "justify-end"
+                } m-2`}
+              >
+                <div
+                  className={`${
+                    message.fromUserId === target
+                      ? "bg-[#bf8e68]"
+                      : "bg-[#ffdeaa]"
+                  } text-4xl text-black p-4 rounded-full max-w-5xl`}
+                >
+                  {message.message}
+                </div>
               </div>
-              <div className="flex space-y-2 flex-col-reverse">
-                {sendContent?.map((content) => (
-                  <div
-                    key={content.id}
-                    className={`flex ${
-                      content.sender === target
-                        ? "justify-start"
-                        : "justify-end"
-                    } m-2`}
-                  >
-                    <div
-                      className={`${
-                        content.sender === target
-                          ? "bg-[#bf8e68]"
-                          : "bg-[#ffdeaa]"
-                      } text-4xl text-black p-4 rounded-full max-w-5xl`}
-                    >
-                      {content.content}
-                    </div>
-                  </div>
-                ))}
+            ))}
+          </div>
+          <div className="flex space-y-2 flex-col-reverse">
+            {sendContent?.map((content) => (
+              <div
+                key={content.id}
+                className={`flex ${
+                  content.sender === target ? "justify-start" : "justify-end"
+                } m-2`}
+              >
+                <div
+                  className={`${
+                    content.sender === target ? "bg-[#bf8e68]" : "bg-[#ffdeaa]"
+                  } text-4xl text-black p-4 rounded-full max-w-5xl`}
+                >
+                  {content.content}
+                </div>
               </div>
             ))}
           </div>
         </div>
-
         {/* Message Input Section */}
-        <div className="flex p-2 border w-full min-h-12 m-0.5">
+        <div className="flex p-2 w-full min-h-12 m-0.5 absolute bottom-0">
           <input
             type="text"
             placeholder="輸入訊息..."
             className="bg-[#fefefe] rounded-full h-16 w-[90%] text-3xl px-3 block"
             ref={contentRef}
+            onKeyDown={handleKeyDown}
           />
           <HiOutlinePaperAirplane
             className="text-6xl w-[10%] text-left cursor-pointer"
             onClick={sendMessage}
           />
         </div>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="flex flex-col border grow rounded-md p-2">
-      {/* Message Target Info Section */}
-      <div className="flex p-2 border w-full min-h-20 m-0.5">
-        <div className="rounded-full w-[8%] m-auto">
-          <img src={Profile_header} alt="Profile" />
-        </div>
-        <div className="w-[85%] text-5xl px-10 my-auto">
-          {nickname?.nickname}
-        </div>
-      </div>
-
-      {/* Chatbox Section */}
-      <div
-        className="w-full flex-grow overflow-y-scroll border no-scrollbar m-0.5"
-        ref={chatroomRef}
-      >
-        <div className="flex space-y-2 flex-col-reverse">
-          {historyMessages?.messageHistory.map((message) => (
-            <div
-              key={message._id}
-              className={`flex ${
-                message.fromUserId === target ? "justify-start" : "justify-end"
-              } m-2`}
-            >
-              <div
-                className={`${
-                  message.fromUserId === target
-                    ? "bg-[#bf8e68]"
-                    : "bg-[#ffdeaa]"
-                } text-4xl text-black p-4 rounded-full max-w-5xl`}
-              >
-                {message.message}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex space-y-2 flex-col-reverse">
-          {sendContent?.map((content) => (
-            <div
-              key={content.id}
-              className={`flex ${
-                content.sender === target ? "justify-start" : "justify-end"
-              } m-2`}
-            >
-              <div
-                className={`${
-                  content.sender === target ? "bg-[#bf8e68]" : "bg-[#ffdeaa]"
-                } text-4xl text-black p-4 rounded-full max-w-5xl`}
-              >
-                {content.content}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Message Input Section */}
-      <div className="flex p-2 border w-full min-h-12 m-0.5">
-        <input
-          type="text"
-          placeholder="輸入訊息..."
-          className="bg-[#fefefe] rounded-full h-16 w-[90%] text-3xl px-3 block"
-          ref={contentRef}
-        />
-        <HiOutlinePaperAirplane
-          className="text-6xl w-[10%] text-left cursor-pointer"
-          onClick={sendMessage}
-        />
       </div>
     </div>
   );
