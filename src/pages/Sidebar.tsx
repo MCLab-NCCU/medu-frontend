@@ -12,7 +12,7 @@ import logout from "../api/logout.ts";
 import { IoIosLogOut } from "react-icons/io";
 import { friendDetail } from "../datatype/User.ts";
 import getProfilePicture from "../api/getProfilePicture.ts";
-
+import { encode, decode } from "js-base64";
 function Sidebar() {
   // Navigation
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ function Sidebar() {
     }
   }, [status]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (status === "success") {
       userFriends.friendList.map(async (friend) => {
         defaultFriends.push({
@@ -57,14 +57,20 @@ function Sidebar() {
         });
       });
       setFriendList(defaultFriends);
+      console.log(defaultFriends.length);
+      console.log(friendList);
+      console.log(friendList.length);
     }
-  }, [status]);
-
+  }, [status]);*/
+  console.log(userFriends);
   async function checkValid() {
     if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
       const newToken = await refresh(ID, refreshToken);
       refreshAccessCookie(newToken);
     }
+  }
+  if (userFriends) {
+    console.log(userFriends.friendList[0].friendProfilePicture);
   }
 
   const handleButtonBottomLines = (buttonName: string) => {
@@ -152,7 +158,7 @@ function Sidebar() {
           {isMessageVisible && (
             <div className="relative w-full h-full bg-shiro shadow-inner shadow-lg overflow-x-hidden overflow-y-scroll no-scrollbar">
               <div className="flex flex-col p-2 gap-0.5 border w-full">
-                {friendList.map((friend) => (
+                {userFriends.friendList.map((friend) => (
                   <div
                     key={friend.friendId}
                     className="flex w-full h-[60px] rounded-3xl items-center cursor-pointer hover:translate-x-0.5 hover:bg-slate-200"
@@ -166,7 +172,15 @@ function Sidebar() {
                     }}
                   >
                     <div className="w-10 border-2 rounded-full m-auto">
-                      <img src={friend.picture} alt="Profile" />
+                      <img
+                        src={
+                          "data:" +
+                          friend.mineType +
+                          ";base64," +
+                          friend.friendProfilePicture
+                        }
+                        alt="Profile"
+                      />
                     </div>
                     <div className="relative w-4/5">
                       <p className="text-2xl">{friend.friendNickname}</p>

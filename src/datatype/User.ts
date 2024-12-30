@@ -29,7 +29,8 @@ export type friendDetail = {
   friendId: string;
   friendNickname: string;
   friendLatestMessage: message;
-  picture: string;
+  friendProfilePicture: string;
+  mineType: string;
 };
 
 export type messageHistory = {

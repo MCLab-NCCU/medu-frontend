@@ -18,7 +18,7 @@ RUN npm run build
 
 #################################
 # production stage
-FROM nginx:alpine
+FROM nginx
 
 WORKDIR /etc/nginx
 

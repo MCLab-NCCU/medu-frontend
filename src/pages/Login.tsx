@@ -39,8 +39,12 @@ function Login() {
       connect(import.meta.env.VITE_WEBSOCKET_URL + userInfo.accessToken);
       setUserInfo(userInfo.userProfile);
       showToast("success", "登入成功");
-      // Navigate to match page
-      navigate("/Match");
+
+      if (userInfo.userProfile.location.county === undefined) {
+        navigate("/Setting/UserSetting");
+      } else {
+        navigate("/Match");
+      }
     } catch (error) {
       showToast("error", "帳密有誤");
       console.error(error); // Handle error

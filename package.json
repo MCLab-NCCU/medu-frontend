@@ -15,6 +15,7 @@
     "base64-encode-file": "^1.0.7",
     "flatpickr": "^4.6.13",
     "http-proxy-middleware": "^3.0.3",
+    "js-base64": "^3.7.7",
     "jwt-decode": "^4.0.0",
     "medu-frontend": "file:",
     "my-app": "file:",
