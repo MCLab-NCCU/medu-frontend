@@ -24,7 +24,7 @@ WORKDIR /etc/nginx
 
 COPY ssl ./
 
-WORKDIR /etc/nginx/sites-enabled
+WORKDIR /etc/nginx/conf.d
 
 COPY default ./
 
