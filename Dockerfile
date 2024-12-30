@@ -26,7 +26,9 @@ COPY ssl ./
 
 WORKDIR /etc/nginx/conf.d
 
-COPY default ./
+RUN rm default.conf
+
+COPY default.conf ./
 
 # 建立工作目錄
 WORKDIR /usr/share/nginx/html
