@@ -1,6 +1,4 @@
-import React, { useState, useEffect, forwardRef } from "react";
-import { IoRemoveOutline } from "react-icons/io5";
-import Logo from "../assets/logos/logo.png";
+import { useState, useEffect, forwardRef } from "react";
 import getProfilePicture from "../api/getProfilePicture";
 
 interface CardInfoProps {

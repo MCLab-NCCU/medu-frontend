@@ -4,15 +4,12 @@ import useFriendList from "../hook/useFriendList";
 import useProfilePicture from "../hook/useProfilePicture";
 import UserContext from "../store/user-context.ts";
 import { showToast } from "../utils/showtoast";
-import Profile_header from "../assets/profile_photo.png";
 import useUserInfoCookie from "../hook/useUserInfoCookie";
 import JWTdecoder from "../utils/JWTdecoder";
 import refresh from "../api/refresh";
 import logout from "../api/logout.ts";
 import { IoIosLogOut } from "react-icons/io";
 import { friendDetail } from "../datatype/User.ts";
-import getProfilePicture from "../api/getProfilePicture.ts";
-import { encode, decode } from "js-base64";
 function Sidebar() {
   // Navigation
   const navigate = useNavigate();
@@ -62,15 +59,12 @@ function Sidebar() {
       console.log(friendList.length);
     }
   }, [status]);*/
-  console.log(userFriends);
+
   async function checkValid() {
     if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
       const newToken = await refresh(ID, refreshToken);
       refreshAccessCookie(newToken);
     }
-  }
-  if (userFriends) {
-    console.log(userFriends.friendList[0].friendProfilePicture);
   }
 
   const handleButtonBottomLines = (buttonName: string) => {

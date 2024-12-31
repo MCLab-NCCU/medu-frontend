@@ -1,9 +1,4 @@
-import React, { useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { userInfo } from "../datatype/User";
-import UserContext from "../store/user-context.ts";
-import { IoBuild, IoChevronBack } from "react-icons/io5";
-import Logo from "../assets/logos/logo-pre.png";
 
 function UserProfile() {
   const navigate = useNavigate();

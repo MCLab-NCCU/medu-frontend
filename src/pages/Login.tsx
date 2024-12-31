@@ -31,8 +31,6 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Login Button Clicked!");
-
     try {
       const userInfo = await login(formData);
       setCookies(userInfo);

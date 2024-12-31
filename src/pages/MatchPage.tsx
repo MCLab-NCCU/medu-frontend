@@ -1,7 +1,6 @@
 import Sidebar from "./Sidebar";
 import { useEffect, useRef, useState, useContext } from "react";
 import useMatchCard from "../hook/useMatchCard";
-import UserContext from "../store/user-context.ts";
 import Card from "./Card";
 import { IoHeart } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
