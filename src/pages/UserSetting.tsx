@@ -20,10 +20,10 @@ function UserSetting() {
     updateUserInfo,
   } = useUserInfoCookie();
   const [isSending, setIsSending] = useState(false);
-  const [selectedCity, setSelectedCity] = useState(userInfo.location.county);
-  const [selectedDistrict, setSelectedDistrict] = useState(
-    userInfo.location.township
-  );
+  const [defaultcounty, setdefaultcounty] = useState("");
+  const [defaultDistrict, setdefaultDistrict] = useState("");
+  const [selectedCity, setSelectedCity] = useState(defaultcounty);
+  const [selectedDistrict, setSelectedDistrict] = useState(defaultDistrict);
 
   async function checkValid() {
     if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
@@ -34,6 +34,17 @@ function UserSetting() {
 
   useEffect(() => {
     checkValid();
+    if (userInfo.location.county === null) {
+      setdefaultcounty("");
+    } else {
+      setdefaultcounty(userInfo.location.county);
+    }
+
+    if (userInfo.location.township === null) {
+      setdefaultDistrict("");
+    } else {
+      setdefaultDistrict(userInfo.location.township);
+    }
   }, []);
 
   const handleCityChange = (event) => {

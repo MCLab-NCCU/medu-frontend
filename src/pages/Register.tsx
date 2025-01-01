@@ -171,7 +171,6 @@ function Register() {
           <option value="">選擇性別</option>
           <option value="male">男性</option>
           <option value="female">女性</option>
-          <option value="other">其他</option>
         </select>
 
         {/* Birthday Input */}
