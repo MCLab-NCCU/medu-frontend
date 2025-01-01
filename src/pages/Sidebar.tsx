@@ -105,6 +105,7 @@ function Sidebar() {
           onClick={() => {
             slideToMatching();
             navigate("/Match");
+            handleButtonBottomLines("matching");
           }}
           className={`ml-4 text-lg underline-button ${
             activeButton === "matching" ? "active" : ""
