@@ -1,10 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import Login from "./Login.tsx";
 import Logo from "../assets/logos/logo-pre.png";
 
 function MainPage() {
-  const navigate = useNavigate();
-
   return (
     <>
       <nav className="absolute flex flex-row gap-4 w-full h-[150px] z-10 bg-ao p-8 opacity-gradient">

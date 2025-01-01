@@ -15,7 +15,7 @@ function useUserInfoCookie() {
     "ID",
   ]);
 
-  const userInfo = (userInfoCookie.userInfo as userInfo) || undefined;
+  const userInfo = (userInfoCookie.userInfo as userProfile) || undefined;
   const ID = (userIdCookie.ID as string) || undefined;
   const accessToken = (accessTokenCookie.accessToken as string) || undefined;
   const refreshToken = (refreshTokenCookie.refreshToken as string) || undefined;
@@ -38,6 +38,10 @@ function useUserInfoCookie() {
     removeUserIdCookies("ID");
   }
 
+  function updateUserInfo(info: userProfile) {
+    setUserInfoCookie("userInfo", info);
+  }
+
   return {
     userInfo,
     accessToken,
@@ -46,6 +50,7 @@ function useUserInfoCookie() {
     setCookies,
     refreshAccessCookie,
     deleteCookies,
+    updateUserInfo,
   };
 }
 

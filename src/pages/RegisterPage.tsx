@@ -1,10 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import Register from "./Register.tsx";
 import Logo from "../assets/logos/logo-pre.png";
 
 function MainPage() {
-  const navigate = useNavigate();
-
   return (
     <>
       <div className="flex flex-row w-full h-screen overflow-hidden">

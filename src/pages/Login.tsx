@@ -4,9 +4,7 @@ import login from "../api/login";
 import { showToast } from "../utils/showtoast";
 import { useWebSocketStore } from "../store/useWebsocket";
 import useUserInfoCookie from "../hook/useUserInfoCookie";
-import JWTdecoder from "../utils/JWTdecoder";
 import UserContext from "../store/user-context.ts";
-
 
 function Login() {
   // Login form data
@@ -14,10 +12,6 @@ function Login() {
     username: "",
     password: "",
   });
-
-  // Connect to websocket
-  const connect = useWebSocketStore((state) => state.connect);
-
 
   const { setCookies } = useUserInfoCookie();
   // Set user info to global user context after login
@@ -34,17 +28,17 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Login Button Clicked!");
-
     try {
       const userInfo = await login(formData);
       setCookies(userInfo);
-      console.log(userInfo.refreshToken);
-      connect(import.meta.env.VITE_WEBSOCKET_URL + userInfo.accessToken);
-      setUserInfo(userInfo);
+      setUserInfo(userInfo.userProfile);
       showToast("success", "登入成功");
-      // Navigate to match page
-      navigate("/Match");
+
+      if (userInfo.userProfile.location.county === undefined) {
+        navigate("/Setting/UserSetting");
+      } else {
+        navigate("/Match");
+      }
     } catch (error) {
       showToast("error", "帳密有誤");
       console.error(error); // Handle error
@@ -94,7 +88,8 @@ function Login() {
         >
           登入
         </button>
-        <button onClick={() => navigate("/Register")}>註冊嗎？註冊！</button>
+        <span className="cursor-default">註冊嗎? </span>
+        <button onClick={() => navigate("/Register")}>註冊！</button>
       </form>
     </div>
   );

@@ -1,11 +1,12 @@
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import RootLayout from "./RootLayout";
-import Home from "./pages/Home.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import MatchPage from "./pages/MatchPage.tsx";
 import ChatRoom from "./pages/ChatRoom.tsx";
 import MainPage from "./pages/MainPage.tsx";
 import UserProfile from "./pages/UserProfile.tsx";
+import UserSetting from "./pages/UserSetting.tsx";
+import ChangePassword from "./pages/ChangePassword.tsx";
 
 const routerData: RouteObject[] = [
   {
@@ -13,8 +14,14 @@ const routerData: RouteObject[] = [
     children: [
       { path: "/Match", Component: MatchPage },
       { path: "/Chat", Component: ChatRoom },
-      { path: "/Profile", Component: UserProfile },
-      { path: "/Home", Component: Home },
+      {
+        path: "/Setting/*",
+        Component: UserProfile,
+        children: [
+          { path: "UserSetting", Component: UserSetting },
+          { path: "ChangePassword", Component: ChangePassword },
+        ],
+      },
       { path: "/Register", Component: RegisterPage },
       { path: "/", Component: MainPage },
     ],
