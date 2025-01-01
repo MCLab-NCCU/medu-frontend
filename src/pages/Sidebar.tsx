@@ -103,6 +103,7 @@ function Sidebar() {
         <button
           type="button"
           onClick={() => {
+            slideToMatching();
             navigate("/Match");
           }}
           className={`ml-4 text-lg underline-button ${

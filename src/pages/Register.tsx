@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import register from "../api/register";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import { showToast } from "../utils/showtoast";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -60,12 +61,38 @@ function Register() {
     console.log("Register Button Clicked!");
 
     try {
+      if (!formData.password.length) {
+        throw new Error("請填寫密碼");
+      }
+
+      if (!formData.username.length) {
+        throw new Error("請填寫使用者姓名");
+      }
+
+      if (!formData.nickname.length) {
+        throw new Error("請填寫使用者暱稱");
+      }
+
+      if (!birthdayInputRef.current.value) {
+        throw new Error("請填寫生日");
+      }
+
+      if (!formData.gender) {
+        throw new Error("請選擇性別");
+      }
+
+      if (formData.password.length < 6) {
+        throw new Error("密碼長度需要大於6");
+      }
       const response = await register(formData);
       if (response.message === "register success") {
         navigate("/");
       }
     } catch (error) {
-      console.error(error); // Handle error
+      if (error instanceof Error) {
+        showToast("error", error.message);
+      }
+      // Handle error
     }
   };
 
