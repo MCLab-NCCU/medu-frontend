@@ -13,9 +13,6 @@ function Login() {
     password: "",
   });
 
-  // Connect to websocket
-  const connect = useWebSocketStore((state) => state.connect);
-
   const { setCookies } = useUserInfoCookie();
   // Set user info to global user context after login
   const { setUserInfo } = useContext(UserContext);
@@ -34,7 +31,6 @@ function Login() {
     try {
       const userInfo = await login(formData);
       setCookies(userInfo);
-      connect(import.meta.env.VITE_WEBSOCKET_URL + userInfo.accessToken);
       setUserInfo(userInfo.userProfile);
       showToast("success", "登入成功");
 

@@ -30,10 +30,9 @@ function ChatRoom() {
   const [sendContent, setSendContent] = useState<content[]>([]);
   const chatroomRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLInputElement>(null);
-  const ws = useWebSocketStore().socket;
-  const connect = useWebSocketStore((state) => state.connect);
   const { refreshAccessCookie, accessToken, refreshToken, ID } =
     useUserInfoCookie();
+  let ws = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL + accessToken);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -90,7 +89,7 @@ function ChatRoom() {
       refreshAccessCookie(newToken);
       refetch();
       ws.close();
-      connect(import.meta.env.VITE_WEBSOCKET_URL + newToken.accessToken);
+      ws = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL + accessToken);
     }
   }
 
@@ -149,7 +148,7 @@ function ChatRoom() {
 
         {/* Chatbox Section */}
         <div
-          className="w-full h-4/5 overflow-y-scroll no-scrollbar m-0.5"
+          className="w-full h-3/4 overflow-y-scroll no-scrollbar m-0.5"
           ref={chatroomRef}
         >
           <div className="flex space-y-2 flex-col-reverse">

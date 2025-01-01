@@ -7,6 +7,7 @@ function useFriendList() {
   return useQuery({
     queryKey: ["friendList", accessToken],
     queryFn: () => getFriendList(accessToken),
+    enabled: false,
   });
 }
 

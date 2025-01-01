@@ -10,19 +10,24 @@ import refresh from "../api/refresh";
 import logout from "../api/logout.ts";
 import { IoIosLogOut } from "react-icons/io";
 import { friendDetail } from "../datatype/User.ts";
+
 function Sidebar() {
   // Navigation
   const navigate = useNavigate();
   const location = useLocation();
-  const { refreshAccessCookie, deleteCookies, accessToken, refreshToken, ID } =
-    useUserInfoCookie();
-  const { data: userFriends, status } = useFriendList();
-  // Get user info from user context
-  const { userInfo } = useContext(UserContext);
+  const {
+    refreshAccessCookie,
+    deleteCookies,
+    accessToken,
+    refreshToken,
+    ID,
+    userInfo,
+  } = useUserInfoCookie();
+  const { data: userFriends, status, refetch } = useFriendList();
+
   // User profile image
   const { data: profileImageUrl, error, isLoading } = useProfilePicture(ID);
-  const defaultFriends = new Array<friendDetail>();
-  const [friendList, setFriendList] = useState(defaultFriends);
+
   // Show message/friendlist section
   const [isMessageVisible, setIsMessageVisible] = useState(false);
   // Controll buttom line for active button state
@@ -43,22 +48,9 @@ function Sidebar() {
     }
   }, [status]);
 
-  /*useEffect(() => {
-    if (status === "success") {
-      userFriends.friendList.map(async (friend) => {
-        defaultFriends.push({
-          friendId: friend.friendId,
-          friendNickname: friend.friendNickname,
-          friendLatestMessage: friend.friendLatestMessage,
-          picture: await getProfilePicture(friend.friendId),
-        });
-      });
-      setFriendList(defaultFriends);
-      console.log(defaultFriends.length);
-      console.log(friendList);
-      console.log(friendList.length);
-    }
-  }, [status]);*/
+  useEffect(() => {
+    refetch();
+  }, []);
 
   async function checkValid() {
     if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
@@ -152,35 +144,36 @@ function Sidebar() {
           {isMessageVisible && (
             <div className="relative w-full h-full bg-shiro shadow-inner shadow-lg overflow-x-hidden overflow-y-scroll no-scrollbar">
               <div className="flex flex-col p-2 gap-0.5 border w-full">
-                {userFriends.friendList.map((friend) => (
-                  <div
-                    key={friend.friendId}
-                    className="flex w-full h-[60px] rounded-3xl items-center cursor-pointer hover:translate-x-0.5 hover:bg-slate-200"
-                    onClick={() => {
-                      if (isMatchPage) {
-                        navigate("/Chat/?friendID=" + friend.friendId);
-                      }
-                      if (isChatroomPage) {
-                        navigate("?friendID=" + friend.friendId);
-                      }
-                    }}
-                  >
-                    <div className="w-10 border-2 rounded-full m-auto">
-                      <img
-                        src={
-                          "data:" +
-                          friend.mineType +
-                          ";base64," +
-                          friend.friendProfilePicture
+                {userFriends &&
+                  userFriends.friendList.map((friend) => (
+                    <div
+                      key={friend.friendId}
+                      className="flex w-full h-[60px] rounded-3xl items-center cursor-pointer hover:translate-x-0.5 hover:bg-slate-200"
+                      onClick={() => {
+                        if (isMatchPage) {
+                          navigate("/Chat/?friendID=" + friend.friendId);
                         }
-                        alt="Profile"
-                      />
+                        if (isChatroomPage) {
+                          navigate("?friendID=" + friend.friendId);
+                        }
+                      }}
+                    >
+                      <div className="w-10 border-2 rounded-full m-auto">
+                        <img
+                          src={
+                            "data:" +
+                            friend.mineType +
+                            ";base64," +
+                            friend.friendProfilePicture
+                          }
+                          alt="Profile"
+                        />
+                      </div>
+                      <div className="relative w-4/5">
+                        <p className="text-2xl">{friend.friendNickname}</p>
+                      </div>
                     </div>
-                    <div className="relative w-4/5">
-                      <p className="text-2xl">{friend.friendNickname}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
           )}

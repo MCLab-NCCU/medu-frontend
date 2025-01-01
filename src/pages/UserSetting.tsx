@@ -6,20 +6,24 @@ import refresh from "../api/refresh";
 import { showToast } from "../utils/showtoast";
 import updateProfile from "../api/updateProfile";
 import postProfilePicture from "../api/postProfilePicture";
-import base64 from "base64-encode-file";
 
 function UserSetting() {
-  const { userInfo, setUserInfo } = useContext(UserContext);
   const nickNameRef = useRef<HTMLInputElement>(null);
   const bioRef = useRef<HTMLTextAreaElement>(null);
   const [file, setFile] = useState<File>(null);
+  const {
+    refreshAccessCookie,
+    accessToken,
+    refreshToken,
+    ID,
+    userInfo,
+    updateUserInfo,
+  } = useUserInfoCookie();
+  const [isSending, setIsSending] = useState(false);
   const [selectedCity, setSelectedCity] = useState(userInfo.location.county);
   const [selectedDistrict, setSelectedDistrict] = useState(
     userInfo.location.township
   );
-  const { refreshAccessCookie, accessToken, refreshToken, ID } =
-    useUserInfoCookie();
-  const [isSending, setIsSending] = useState(false);
 
   async function checkValid() {
     if (JWTdecoder(accessToken).exp < Math.floor(new Date().getTime() / 1000)) {
@@ -448,7 +452,7 @@ function UserSetting() {
         await postProfilePicture(accessToken, file);
       }
 
-      setUserInfo({
+      updateUserInfo({
         birthDate: userInfo.birthDate,
         gender: userInfo.gender,
         location: { county: selectedCity, township: selectedDistrict },
@@ -472,7 +476,7 @@ function UserSetting() {
             },
             accessToken
           );
-          setUserInfo({
+          updateUserInfo({
             birthDate: userInfo.birthDate,
             gender: userInfo.gender,
             location: { county: selectedCity, township: selectedDistrict },
