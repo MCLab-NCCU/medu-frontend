@@ -57,6 +57,9 @@ function UserSetting() {
   };
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
+      if (e.target.files[0].size > 1048576) {
+        alert("檔案太大，請選擇小於 1MB 的檔案。");
+      }
       setFile(e.target.files[0]);
     }
   }
@@ -449,6 +452,9 @@ function UserSetting() {
       }
       if (!bio.length) {
         throw new Error("請填寫自介!");
+      }
+      if (file.size > 1048576) {
+        throw new Error("檔案太大，請選擇小於 1MB 的檔案。");
       }
 
       await updateProfile(
